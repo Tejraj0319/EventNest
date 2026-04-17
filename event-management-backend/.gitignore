@@ -1,0 +1,75 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+
+# Coverage
+coverage/
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Mac system files
+.AppleDouble
+.LSOverride
+
+# Temporary files
+tmp/
+temp/
+
+# Debug files
+*.swp
+
+# Prisma (optional - ignore generated files if needed)
+# prisma/generated/
+
+# MongoDB local files (if any)
+*.db
+
+# Uploads (if you store locally)
+uploads/
+public/uploads/
+
+# Firebase (if used)
+.firebase/
+
+# Docker (optional)
+docker-compose.override.yml
+
+# Test files (optional)
+*.test.js
+*.spec.js
