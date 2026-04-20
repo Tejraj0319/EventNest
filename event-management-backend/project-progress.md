@@ -1,4 +1,5 @@
 📅 Day 1 – Project Progress
+
 ✅ Completed
 Project setup (Node.js + Express)
 Prisma ORM configured with MySQL
@@ -16,4 +17,14 @@ Role middleware (RBAC implemented)
 📌 Status
 Backend foundation ready
 Auth system completed
-Ready to start Event Module
+
+📅 Day 2 Summary (Short)
+
+* Implemented Event Module (full CRUD)
+* Added slug generation with uniqueness handling
+* Implemented Update & Delete APIs with ownership checks
+* Added seat adjustment logic (prevents invalid updates)
+* Integrated Joi validation + validation middleware
+* Structured routes with auth + role-based protection
+✅ Event module is production-ready
+

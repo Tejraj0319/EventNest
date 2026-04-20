@@ -12,5 +12,23 @@ model User {
   email     String   @unique
   password  String
   role      String
+  events    Event[]
   createdAt DateTime @default(now())
+}
+
+model Event {
+  id             Int      @id @default(autoincrement())
+  title          String
+  slug           String   @unique
+  description    String
+  location       String
+  price          Float
+  totalSeats     Int
+  availableSeats Int
+  date           DateTime
+  image          String?
+  organizerId    Int
+  organizer      User     @relation(fields: [organizerId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
