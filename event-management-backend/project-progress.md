@@ -45,3 +45,14 @@ Auth system completed
 
 ----------------------------------------------------------------------------------------------------------
 
+📅 Day 4 Summary
+
+* Integrated Razorpay Payment (Booking → PENDING → CONFIRMED flow)
+* Built Verify Payment API with signature validation + seat deduction after success
+* Implemented Webhook for automatic payment confirmation (production safety)
+* Added QR Code generation for tickets
+* Built PDF Ticket Generator (QR + event/user details)
+* Implemented Email System (sending ticket as attachment, non-blocking)
+* Added Auto-expire bookings using cron (cancel unpaid bookings)
+* Fixed webhook raw body parsing + ngrok setup for local testing
+  ✅ Full payment + ticketing system is production-ready

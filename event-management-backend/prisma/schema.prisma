@@ -36,13 +36,19 @@ model Event {
 }
 
 model Booking {
-  id         Int      @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   userId     Int
   eventId    Int
   quantity   Int
   totalPrice Float
-  status     String   @default("CONFIRMED")
-  user       User     @relation(fields: [userId], references: [id])
-  event      Event    @relation(fields: [eventId], references: [id])
-  createdAt  DateTime @default(now())
+  status     String @default("PENDING")
+
+  paymentId String? // Razorpay payment id
+  orderId   String? // Razorpay order id
+
+  qrCode String? @db.Text
+
+  user      User     @relation(fields: [userId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id])
+  createdAt DateTime @default(now())
 }
