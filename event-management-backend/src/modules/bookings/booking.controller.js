@@ -42,7 +42,6 @@ const getEventBookings = async (req, res) => {
 const verifyPayment = async (req, res) => {
     try {
         const bookings = await BookingService.verifyPayment(req.body)
-        await sendTicketEmail("rjteenagewar@gmail.com", "test.pdf");
         return res.status(200).json({ success: true, message: "Payment successful, booking confirmed", data: bookings })
     } catch (error) {
         console.log(error);

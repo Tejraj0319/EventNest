@@ -227,7 +227,7 @@ const verifyPayment = async (data) => {
         });
 
         // 9. Generate PDF ticket
-        const ticketPdf = await generateTicket(updatedBooking, user, event);
+        const ticketPdf = await generateTicket(updatedBooking, user, event, qrCode);
 
         //DEBUG HERE
         console.log("Is Buffer:", Buffer.isBuffer(ticketPdf));
