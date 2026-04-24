@@ -1,210 +1,365 @@
-
-# 🚀 Event Management Platform – Day 4 Summary
-
+# 📅 EventNest Admin Dashboard – Day 5 Summary
 
 # 🧠 WHAT WE BUILT TODAY
 
-Today we upgraded the system from **functional → production-grade** by adding:
+Today we started the **Admin Dashboard Frontend** using **React + Vite + Redux Toolkit (RTK)**.
+Main focus was **functionality first**, not CSS/UI.
 
-### 🔥 Core Upgrades:
+We successfully completed:
 
-* Payment Integration (Razorpay)
-* Payment Verification Flow
-* Webhook System (production safety)
-* QR Code Ticket System
-* PDF Ticket Generation
-* Email Delivery System
-* Auto-expire Unpaid Bookings
+✅ React project setup
+✅ Redux Toolkit store setup
+✅ Admin Login with backend integration
+✅ JWT token storage
+✅ Protected Routes
+✅ Sidebar Navigation
+✅ Reusable Admin Layout
+✅ Dashboard Stats Cards
+✅ Users Management Page
+✅ Events Management Page
+✅ Bookings Management Page
 
-👉 Your backend is now **end-to-end automated**
+👉 Admin panel frontend foundation is now ready.
 
+# 📁 PROJECT STRUCTURE CREATED
+
+## 📦 Root Frontend Project
+
+admin-dashboard/
+src/
+
+## 📦 Main Folders Created
+
+src/
+│── app/
+│── features/
+│── pages/
+│── components/
+│── routes/
+│── services/ (optional future use)
 
 # 📁 FILES CREATED / UPDATED
 
-## 📦 New Utility Files
+## 📦 Redux Store
 
-### 📁 `src/utils/`
+### `src/app/store.js`
 
-* `razorpay.js` → Razorpay instance setup
-* `generateTicket.js` → PDF ticket generator (PDFKit + QR)
-* `sendEmail.js` → Email service (Nodemailer)
+Created Redux store using `configureStore()`.
 
+Connected reducer:
 
-## 📦 New Job (Cron)
+auth
 
-### 📁 `src/jobs/`
+Used in whole app via `<Provider>`.
 
-* `expireBookings.js` → Auto-cancel unpaid bookings
+## 📦 Auth Module
 
+### `src/features/auth/authAPI.js`
 
-## 📦 Updated Modules
+Created axios login API:
 
-### 📁 `src/modules/bookings/`
+POST /api/v1/auth/login
 
-#### ✅ `booking.service.js` (🔥 heavily upgraded)
+Used backend URL:
 
-* Added Razorpay order creation
-* Changed booking flow → `PENDING → CONFIRMED`
-* Implemented:
+http://localhost:5000/api/v1
 
-  * Payment verification
-  * Seat deduction AFTER payment
-  * QR code generation
-  * PDF ticket generation
-  * Email sending (non-blocking)
-* Improved cancel logic (handles CONFIRMED vs PENDING)
+### `src/features/auth/authSlice.js`
 
+Created auth state management:
 
-#### ✅ `booking.controller.js`
+### State:
 
-* Added:
+user
+token
+loading
+error
 
-  * `verifyPayment`
-  * `handleWebhook`
-* Webhook signature validation added
+### AsyncThunk:
 
+loginAdmin
 
-#### ✅ `booking.routes.js`
+### Reducers:
 
-Added routes:
-http
-POST   /api/v1/bookings          → Create booking (PENDING)
-POST   /api/v1/bookings/verify-payment
-POST   /api/v1/bookings/webhook
-PUT    /api/v1/bookings/cancel/:id
-GET    /api/v1/bookings
-GET    /api/v1/bookings/:eventId
+logout
 
+### Fixed Important Issue:
 
-## 📦 Core App Changes
+Backend response was:
 
-### ✅ `app.js`
-js
-app.use("/api/v1/bookings/webhook", express.raw({ type: "*/*" }));
-app.use(express.json());
-
-👉 Critical fix for webhook signature verification
-
-
-### ✅ `server.js`
-js
-require("./jobs/expireBookings");
-
-👉 Cron job initialized
-
-
-## 🗄️ DATABASE (PRISMA UPDATES)
-
-### ✅ Booking Model Updated:
-prisma
-model Booking {
-  id         Int
-  userId     Int
-  eventId    Int
-  quantity   Int
-  totalPrice Float
-  status     String
-  paymentId  String?
-  orderId    String?
-  qrCode     String?
-  createdAt  DateTime
+json
+{
+success: true,
+data: {
+user,
+token
+}
 }
 
+So updated fulfilled case:
 
-# ⚙️ FEATURES IMPLEMENTED
+action.payload.data.user
+action.payload.data.token
 
+Stored token in localStorage.
 
-## 💳 1. PAYMENT FLOW (MAJOR UPGRADE)
+# 📦 Main React Files
 
-### New Flow:
-text
-Create Booking → PENDING
-        ↓
-Create Razorpay Order
-        ↓
-Payment Success
-        ↓
-Verify Payment API / Webhook
-        ↓
-CONFIRMED + Seats Deducted
+### `src/main.jsx`
 
+Wrapped app with Redux Provider.
 
-## 🔐 2. PAYMENT VERIFICATION
+<Provider store={store}>
 
-* HMAC SHA256 signature validation
-* Prevent duplicate verification
-* Seat deduction happens **only after success**
+### `src/App.jsx`
 
+Connected route system:
 
-## 🔔 3. WEBHOOK SYSTEM
+<AppRoutes />
 
-* Handles:
+# 📦 Routing
 
-  * `payment.captured`
-* Uses:
+### `src/routes/AppRoutes.jsx`
 
-  * Raw body parsing
-  * Signature validation
-* Ensures:
+Created routing:
 
-  * No missed payments
-  * Works even if frontend fails
+/ -> Login
+/dashboard -> Dashboard
+/users -> Users
+/events -> Events
+/bookings -> Bookings
 
+All private routes wrapped with:
 
-## 🎟️ 4. TICKET GENERATION
+<PrivateRoute>
+<AdminLayout>
 
-* QR Code created using `qrcode`
-* PDF generated using `pdfkit`
-* Includes:
+# 📦 Components Created
 
-  * Event details
-  * Booking info
-  * QR code
+## `src/components/PrivateRoute.jsx`
 
+Protects private pages.
 
-## 📩 5. EMAIL SYSTEM
+Logic:
 
-* Sends ticket as PDF attachment
-* Implemented using Nodemailer
-* Non-blocking (via `setImmediate`)
-* Retry logic supported
+If token exists -> allow page
+Else -> redirect to login
 
+Used `Navigate`.
 
-## ⏱️ 6. AUTO-EXPIRE BOOKINGS
+## `src/components/Sidebar.jsx`
 
-* Runs every 5 minutes
-* Cancels bookings where:
+Created sidebar navigation.
 
-  * status = `PENDING`
-  * older than 10 minutes
+Links:
 
-### Important Logic:
+Dashboard
+Users
+Events
+Bookings
 
-* ❌ No seat restore needed (not deducted yet)
+Added Logout button:
 
+dispatch(logout())
+navigate("/")
 
-# 🛡️ PROBLEMS SOLVED TODAY
+## `src/components/AdminLayout.jsx`
 
-* Razorpay key error (`key_id missing`)
-* JSON body not parsed issue
-* Invalid payment signature (testing vs real)
-* Webhook signature validation failure
-* ngrok setup issues
-* Port connection error
-* Auth token missing errors
-* Race condition prevention (seat deduction)
+Reusable layout component.
 
+Structure:
+
+Sidebar | Page Content
+
+Used `children` prop.
+
+Avoided repeating sidebar code in every page.
+
+# 📦 Pages Created
+
+## `src/pages/Login.jsx`
+
+Built Admin Login page.
+
+Features:
+
+Email input
+Password input
+Submit button
+Loading state
+Error message
+Login success -> navigate("/dashboard")
+
+Connected Redux thunk:
+
+dispatch(loginAdmin(form))
+
+## `src/pages/Dashboard.jsx`
+
+Created dashboard home page.
+
+Added stats cards using dummy data:
+
+Total Users
+Total Events
+Total Bookings
+Revenue
+
+Used array + map() rendering.
+
+## `src/pages/Users.jsx`
+
+Created users management table.
+
+Dummy records:
+
+ID
+Email
+Role
+
+Roles:
+
+USER
+ORGANIZER
+ADMIN
+
+## `src/pages/Events.jsx`
+
+Created events management table.
+
+Fields:
+
+ID
+Title
+Price
+Seats
+
+## `src/pages/Bookings.jsx`
+
+Created bookings management table.
+
+Fields:
+
+ID
+User
+Event
+Amount
+Status
+
+Statuses:
+
+CONFIRMED
+PENDING
+CANCELLED
+
+# 🛠️ IMPORTANT ISSUES SOLVED TODAY
+
+## 🔥 Login Failed Issue
+
+Problem:
+Frontend expected:
+
+payload.token
+
+But backend returned:
+
+payload.data.token
+
+Fixed authSlice.
+
+## 🔥 Backend Route Verified
+
+Confirmed backend login route:
+
+POST /api/v1/auth/login
+
+## 🔥 Protected Routing Added
+
+Now manual URL access blocked without login.
 
 # 🎯 CURRENT SYSTEM STATUS
 
-✅ Auth System
-✅ Event Module
-✅ Booking System
-✅ Payment Integration
-✅ Webhook System
-✅ QR Ticket System
-✅ Email System
-✅ Auto-expiry System
+## Backend (Already Ready)
 
-👉 💥 FULL BACKEND IS NOW PRODUCTION-READY
+✅ Auth
+✅ Roles
+✅ Events CRUD
+✅ Bookings
+✅ Payments
+✅ QR Tickets
+✅ Email
+✅ Auto-expiry
 
+## Frontend Admin Dashboard
+
+✅ Login
+✅ Redux Auth
+✅ Protected Routes
+✅ Sidebar
+✅ Layout
+✅ Dashboard Cards
+✅ Users Page
+✅ Events Page
+✅ Bookings Page
+
+👉 Admin frontend skeleton completed.
+
+# 🚀 WHAT TO START TOMORROW (DAY 6)
+
+Now move from dummy frontend → real backend integration.
+
+## Priority Work:
+
+## 1️⃣ Dashboard Stats API
+
+Build backend admin stats endpoint:
+
+GET /admin/stats
+
+Return:
+
+totalUsers
+totalEvents
+totalBookings
+totalRevenue
+
+Then connect Dashboard cards.
+
+## 2️⃣ Users API Integration
+
+GET /admin/users
+
+Replace dummy users table.
+
+## 3️⃣ Events API Integration
+
+GET /admin/events
+
+Replace dummy events table.
+
+## 4️⃣ Bookings API Integration
+
+GET /admin/bookings
+Replace dummy bookings table.
+
+## 5️⃣ Role Based Admin Access
+
+Only allow:
+ADMIN
+
+Block USER / ORGANIZER from admin dashboard.
+
+# 💎 RECOMMENDED DAY 6 FLOW
+
+1. Build backend admin routes
+2. Connect RTK APIs
+3. Show real data in tables
+4. Add logout persistence
+5. Start CSS later
+
+# 🔥 FINAL NOTE FOR TOMORROW
+
+Use this command:
+
+Continue EventNest Admin Dashboard from Day 5 summary.
+Need real backend API integration now.

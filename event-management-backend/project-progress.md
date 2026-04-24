@@ -56,3 +56,19 @@ Auth system completed
 * Added Auto-expire bookings using cron (cancel unpaid bookings)
 * Fixed webhook raw body parsing + ngrok setup for local testing
   ✅ Full payment + ticketing system is production-ready
+
+----------------------------------------------------------------------------------------------------------
+
+📅 Day 5 Summary
+
+* Started Admin Dashboard Frontend using React + Vite + Redux Toolkit
+* Configured Redux store and Auth module (`authAPI.js`, `authSlice.js`)
+* Built Admin Login page with backend JWT integration
+* Implemented token storage + auto redirect to dashboard after login
+* Added Protected Routes to block unauthorized dashboard access
+* Created reusable Admin Layout with Sidebar navigation
+* Built Dashboard page with stats cards (dummy data)
+* Created Users, Events, and Bookings management pages with tables
+* Added Logout functionality with Redux state clear + redirect
+* Fixed login response mapping issue (`payload.data.token`)
+  ✅ Admin dashboard frontend foundation is ready
