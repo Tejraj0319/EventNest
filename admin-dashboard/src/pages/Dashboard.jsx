@@ -1,31 +1,22 @@
-import React from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStats } from "../features/admin/adminSlice";
 
 const Dashboard = () => {
-  const stats = [
-    { title: "Total Users", value: 120 },
-    { title: "Total Events", value: 35 },
-    { title: "Total Bookings", value: 540 },
-    { title: "Revenue", value: "₹85,000" },
-  ];
+  const dispatch = useDispatch();
+  const { stats } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(fetchStats());
+  }, [dispatch]);
 
   return (
     <div>
       <h1>Dashboard</h1>
-      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-        {stats.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              border: "1px solid black",
-              padding: "20px",
-              width: "200px",
-            }}
-          >
-            <h3>{item.title}</h3>
-            <p>{item.value}</p>
-          </div>
-        ))}
-      </div>
+      <p>Total Users: {stats.totalUsers}</p>
+      <p>Total Events: {stats.totalEvents}</p>
+      <p>Total Bookings: {stats.totalBookings}</p>
+      <p>Total Revenue: ₹{stats.totalRevenue}</p>
     </div>
   );
 };

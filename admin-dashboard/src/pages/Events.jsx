@@ -1,50 +1,24 @@
-function Events() {
-  const events = [
-    {
-      id: 1,
-      title: "Music Concert",
-      price: 999,
-      seats: 200,
-    },
-    {
-      id: 2,
-      title: "Tech Meetup",
-      price: 499,
-      seats: 100,
-    },
-    {
-      id: 3,
-      title: "Comedy Night",
-      price: 799,
-      seats: 150,
-    },
-  ];
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEvents } from "../features/admin/adminSlice";
 
+function Events() {
+  const dispatch = useDispatch();
+  const { events } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(fetchEvents());
+  }, [dispatch]);
   return (
     <div>
-      <h1>Events Page</h1>
+      <h1>Users Page</h1>
 
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Seats</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {events.map((event) => (
-            <tr key={event.id}>
-              <td>{event.id}</td>
-              <td>{event.title}</td>
-              <td>₹{event.price}</td>
-              <td>{event.seats}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {events.map((event) => (
+        <div key={event.id}>
+          {event.id} | {event.title} | ₹{event.price} | Seats:{" "}
+          {event.availableSeats}/{event.totalSeats} | Location: {event.location}
+        </div>
+      ))}
     </div>
   );
 }

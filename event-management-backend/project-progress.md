@@ -28,7 +28,6 @@ Auth system completed
 * Added seat adjustment logic (prevents invalid updates)
 * Integrated Joi validation + validation middleware
 * Structured routes with auth + role-based protection
-✅ Event module is production-ready
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -41,7 +40,6 @@ Auth system completed
 * Fixed Prisma relations
 * Ensured concurrency safety (prevented overbooking)
 * Applied validation, auth, and ownership checks across booking flows
-  ✅ Booking system is production-ready
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -55,7 +53,6 @@ Auth system completed
 * Implemented Email System (sending ticket as attachment, non-blocking)
 * Added Auto-expire bookings using cron (cancel unpaid bookings)
 * Fixed webhook raw body parsing + ngrok setup for local testing
-  ✅ Full payment + ticketing system is production-ready
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -71,4 +68,22 @@ Auth system completed
 * Created Users, Events, and Bookings management pages with tables
 * Added Logout functionality with Redux state clear + redirect
 * Fixed login response mapping issue (`payload.data.token`)
-  ✅ Admin dashboard frontend foundation is ready
+
+----------------------------------------------------------------------------------------------------------
+
+📅 Day 6 Summary
+
+* Built complete Admin Backend Module (`admin.routes.js`, `admin.controller.js`, `admin.service.js`)
+* Added protected Admin APIs using JWT auth + `ADMIN` role middleware
+* Created Admin endpoints: Stats, Users, Events, Bookings
+* Implemented revenue calculation from `CONFIRMED` bookings
+* Added user management APIs (change role / block-unblock user)
+* Connected React Admin Dashboard to real backend APIs using Redux Toolkit
+* Created `adminAPI.js` and `adminSlice.js` for async data fetching
+* Replaced dummy dashboard/cards/tables with live backend data
+* Fixed token header issue causing `401 Unauthorized`
+* Fixed role-based login redirect (ADMIN → dashboard only)
+* Organizer/User blocked from Admin Dashboard access
+
+----------------------------------------------------------------------------------------------------------
+

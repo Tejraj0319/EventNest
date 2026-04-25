@@ -1,45 +1,24 @@
-function Users() {
-  const users = [
-    {
-      id: 1,
-      email: "test@gmail.com",
-      role: "ORGANIZER",
-    },
-    {
-      id: 2,
-      email: "admin@gmail.com",
-      role: "ADMIN",
-    },
-    {
-      id: 3,
-      email: "raj@gmail.com",
-      role: "USER",
-    },
-  ];
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../features/admin/adminSlice";
 
+function Users() {
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
   return (
     <div>
       <h1>Users Page</h1>
 
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {users.map((user) => (
+        <div key={user.id}>
+          {user.email} | {user.role}
+        </div>
+      ))}
+      
     </div>
   );
 }

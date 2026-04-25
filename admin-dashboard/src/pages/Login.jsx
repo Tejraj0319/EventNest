@@ -7,7 +7,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, token } = useSelector((state) => state.auth);
+  const { loading, error, token, user } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
     email: "",
@@ -27,10 +27,14 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (token) {
+    if (token && user?.role === "ADMIN") {
       navigate("/dashboard");
+    } else if (token && user?.role === "ORGANIZER") {
+      navigate("/organizer");
+    } else if (token && user?.role === "USER") {
+      navigate("/");
     }
-  }, [token]);
+  }, [token, user, navigate]);
 
   return (
     <div>

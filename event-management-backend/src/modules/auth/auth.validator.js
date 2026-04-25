@@ -9,7 +9,7 @@ const registerValidator = (data) => {
         return "Password must be at least 6 characters";
     }
 
-    if (role && !["USER", "ORGANIZER"].includes(role)) {
+    if (role && !["ADMIN","USER", "ORGANIZER"].includes(role)) {
         return "Invalid role";
     }
 
