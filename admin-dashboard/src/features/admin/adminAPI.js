@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:5000/api/v1";
 
-const getToken = () => {return localStorage.getItem("token") }
+const getToken = () => { return localStorage.getItem("token") }
 
 const config = () => ({
     headers: {
@@ -67,3 +67,13 @@ export const blockUserAPI = async (id, isBlocked) => {
         console.error("Error in block user:", error);
     }
 };
+
+
+export const deleteEventAPI = async (id) => {
+    try {
+        const res = await axios.delete(`${BASE_URL}/admin/events/${id}`, config())
+        return res.data;
+    } catch (error) {
+        console.error("Error deleting event:", error);
+    }
+}

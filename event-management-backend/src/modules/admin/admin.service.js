@@ -73,9 +73,17 @@ const getEvents = async () => {
 
 // Delete event
 const deleteEvent = async (id) => {
-    return await prisma.event.delete({
-        where: { id: Number(id) },
+  const eventId = Number(id);
+
+  return await prisma.$transaction(async (tx) => {
+    await tx.booking.deleteMany({
+      where: { eventId: eventId },
     });
+
+    return await tx.event.delete({
+      where: { id: eventId },
+    });
+  });
 };
 
 // Get All Bookings

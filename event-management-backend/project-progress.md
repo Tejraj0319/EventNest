@@ -87,3 +87,19 @@ Auth system completed
 
 ----------------------------------------------------------------------------------------------------------
 
+📅 Day 7 Summary
+
+* Upgraded Admin Users page into table format with live backend data
+* Added Change Role feature (USER / ORGANIZER / ADMIN)
+* Added Block / Unblock user functionality with auto refresh
+* Added Search + Pagination on Users page
+* Installed and integrated `react-toastify` for success notifications
+* Built Admin Events page in table format
+* Added Search + Pagination on Events page
+* Added Delete Event feature with confirmation popup + toast
+* Fixed backend event delete issue by removing related bookings first using Prisma transaction
+* Fixed Prisma type mismatch by converting route `id` string to number
+* Built Admin Bookings page in table format with live data
+* Added Search + Pagination on Bookings page
+* Improved overall Admin Dashboard usability with professional management features
+

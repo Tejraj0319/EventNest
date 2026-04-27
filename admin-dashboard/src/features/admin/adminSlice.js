@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { fetchStatsAPI, fetchUsersAPI, fetchEventsAPI, fetchBookingsAPI } from "./adminAPI"
+import { fetchStatsAPI, fetchUsersAPI, fetchEventsAPI, fetchBookingsAPI, updateRoleAPI, blockUserAPI, deleteEventAPI } from "./adminAPI"
 
 const initialState = {
     stats: {},
@@ -27,6 +27,20 @@ export const fetchBookings = createAsyncThunk(
     "admin/fetchBookings",
     async () => await fetchBookingsAPI()
 );
+export const updateRole = createAsyncThunk(
+    "admin/updateRole",
+    async ({ id, role }) => await updateRoleAPI(id, role)
+)
+export const blockUser = createAsyncThunk(
+    "admin/blockUser",
+    async ({ id, isBlocked }) => {
+        return await blockUserAPI(id, isBlocked);
+    }
+)
+export const deleteEvent = createAsyncThunk(
+    "admin/deleteEvent",
+    async (id) => await deleteEventAPI(id)
+)
 
 const adminSlice = createSlice({
     name: "admin",
@@ -38,7 +52,7 @@ const adminSlice = createSlice({
             .addCase(fetchStats.pending, (state, action) => {
                 state.loading = true
             })
-            
+
             .addCase(fetchStats.fulfilled, (state, action) => {
                 state.loading = false,
                     state.stats = action.payload.data
