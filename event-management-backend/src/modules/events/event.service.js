@@ -90,8 +90,6 @@ const updateEvent = async (id, data, user) => {
   return updatedEvent;
 };
 
-module.exports = updateEvent;
-
 
 const deleteEvent = async (id, user) => {
     const event = await prisma.event.findUnique({

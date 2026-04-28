@@ -1,182 +1,243 @@
-# 📅 Day 7 Summary – Admin Dashboard Functional Upgrade
+# 📅 Day 8 Summary – Organizer Dashboard Setup (Current Progress)
 
-Today we upgraded the **Admin Dashboard Frontend + Backend Integration** and turned it into a more professional management panel with real functionality.
+Today we started building a **separate Organizer Dashboard frontend** for EventNest using **React + Vite + Redux Toolkit**, connected with the existing Node.js + Express + Prisma backend.
 
-# ✅ MAIN WORK COMPLETED TODAY
+# ✅ Project Structure Created
 
-## 👨‍💼 Admin Users Management
+## 📁 New Frontend Project
 
-### 📄 File Updated
-text id="j6hqyf"
-src/pages/Users.jsx
+E:\Projects\EventNest\organizer-dashboard
+Separate from:
+E:\Projects\EventNest\admin-dashboard
+E:\Projects\EventNest\event-management-backend
 
-### Features Added
+This follows professional industry structure:
 
-✅ Users displayed in **table format** instead of cards
-✅ Fetch all users from backend using Redux
-✅ Change user role:
+- Admin panel separate
+- Organizer panel separate
+- Backend shared API
 
-- USER
-- ORGANIZER
-- ADMIN
+# ✅ Frontend Tech Stack Installed
 
-✅ Block / Unblock users
-✅ Search users by email
-✅ Pagination added (5 users per page)
-✅ Toast success messages after actions
+npm install react-router-dom
+npm install @reduxjs/toolkit react-redux
+npm install axios
 
-### Logic Implemented
+# ✅ Redux Store Setup
 
-- `updateRole()` thunk dispatch
-- `blockUser()` thunk dispatch
-- Refetch users after update
-- Current page reset when searching
+## 📄 File Created
 
-# 🎉 Toast Notifications Added
+src/app/store.js
+Configured Redux store with:
+auth: authReducer
 
-### Package Installed
-bash id="1cb5o4"
-npm install react-toastify
+# ✅ Authentication Module Completed
 
-### Files Updated
-text id="5onb6k"
+## 📄 Files Created
+
+src/features/auth/authAPI.js
+src/features/auth/authSlice.js
+
+## ✅ Login API Connected
+
+Uses backend:
+POST /api/v1/auth/login
+
+Axios base URL:
+http://localhost:5000/api/v1
+
+## ✅ Auth Slice Features
+
+### State Managed:
+
+token
+user
+loading
+error
+
+### LocalStorage Persistence Added:
+
+token
+user
+
+So refresh page does not logout.
+
+## ✅ Logout Implemented
+
+Removes:token, user from localStorage.
+
+# ✅ Main React Setup Completed
+
+## 📄 File
+
 src/main.jsx
 
-### Implemented
+Wrapped app with:
+<Provider store={store}>
+<BrowserRouter>
+<App />
 
-✅ `ToastContainer` added globally
-✅ Success toasts for:
+# ✅ Routing Setup Completed
 
-- Role updated
-- User blocked/unblocked
-- Event deleted
+## 📄 File
 
-# 🎟️ Admin Events Management
+src/routes/AppRoutes.jsx
 
-### 📄 File Updated
-text id="y0ekg6"
-src/pages/Events.jsx
+## Current Routes Working
 
-### Features Added
+/ -> Organizer Login
+/dashboard -> Organizer Dashboard
+/events -> My Events
+/create-event -> Create Event
 
-✅ Events shown in table format
-✅ Columns:
+Protected using PrivateRoute.
 
-- Title
-- Price
-- Seats
-- Location
+# ✅ Login Page Completed
 
-✅ Delete event button
-✅ Confirmation popup before delete
-✅ Auto refresh event list after delete
-✅ Toast after successful deletion
+## 📄 File
 
-# 🛠️ Backend Event Delete Fix
+src/pages/auth/Login.jsx
 
-### 📄 File Updated
-text id="m9jvw8"
-src/modules/admin/admin.service.js
+### Features:
 
-### Problem Solved
+✅ Email + Password Form
+✅ Redux login dispatch
+✅ Loading button state
+✅ Error message support
+✅ Auto redirect after login
 
-❌ Could not delete event because bookings existed
-(Foreign key constraint error)
+navigate("/dashboard")
 
-### Solution Applied
+Only if role is: ORGANIZER
 
-Used Prisma transaction:
-js id="lyl1mf"
-1. Delete related bookings first
-2. Delete event after that
+# ✅ Route Protection Completed
 
-### Also Fixed
+## 📄 File
 
-❌ Prisma type error (`eventId` string)
+src/components/PrivateRoute.jsx
 
-### Final Fix
-js id="w66s9f"
-const eventId = Number(id);
+### Logic:
 
-# 📚 Admin Bookings Management
+If no token: redirect /
 
-### 📄 File Updated
-text id="fw5ghr"
-src/pages/Bookings.jsx
+If role not ORGANIZER: redirect /
 
-### Features Added
+Else allow access.
 
-✅ Bookings shown in table format
+# ✅ Organizer Layout Completed
 
-Columns:
+## 📄 File
 
-- User Email
-- Event Title
-- Quantity
-- Amount
-- Status
+src/components/OrganizerLayout.jsx
 
-✅ Search bookings by:
+### Structure:
 
-- User email
-- Event title
-- Status
+Sidebar + Page Content
 
-✅ Pagination added
-✅ Loading state supported
+Uses: children
 
-# 📁 Redux / API Already Used Today
+# ✅ Sidebar Completed
 
-### Existing Files Continued
-text id="yxn6ar"
-src/features/admin/adminAPI.js
-src/features/admin/adminSlice.js
+## 📄 File
 
-### APIs Used
+src/components/Sidebar.jsx
 
-✅ fetchUsers
-✅ fetchEvents
-✅ fetchBookings
-✅ updateRoleAPI
-✅ blockUserAPI
-✅ deleteEventAPI
+### Links:
 
-# 🚀 CURRENT PROJECT STATUS
+Dashboard
+Create Event
+My Events
+Logout
 
-# Backend Ready
+Logout dispatches Redux logout and redirects to login page.
 
-✅ Auth Module
-✅ Role Based Access
-✅ Events Module
-✅ Bookings Module
-✅ Razorpay Payments
-✅ QR Ticket
-✅ Email Ticket
-✅ Auto Expiry
-✅ Admin Module
+# ✅ Refresh Login Issue Solved
 
-# Frontend Ready
+Problem:
+After refresh user redirected to login.
 
-✅ Admin Login
+### Fixed by storing:
+
+token, user in localStorage and loading them in Redux initial state.
+
+# ✅ Backend Already Available
+
+## Existing Backend APIs Ready
+
+POST /auth/login
+GET /events
+POST /events
+PUT /events/:id
+DELETE /events/:id
+
+Role protected with:
+authMiddleware
+roleMiddleware("ORGANIZER")
+
+# 🚀 CURRENT STATUS
+
+## Frontend Ready
+
+✅ Login System
+✅ Redux Auth
 ✅ Protected Routes
 ✅ Sidebar Layout
-✅ Dashboard Stats
-✅ Users Management
-✅ Events Management
-✅ Bookings Management
+✅ Persistent Login After Refresh
+
+## Backend Ready
+
+✅ Organizer Event APIs already built
+
+# 🎯 TOMORROW START FROM HERE (Next Tasks)
+
+## Day 9 – Real Organizer Dashboard Functional Build
+
+### Priority Order:
+
+## 1️⃣ Organizer Dashboard Page
+
+📄 File:
+src/pages/organizer/Dashboard.jsx
+
+Build cards:
+✅ Total Events
+✅ Total Bookings
+✅ Revenue
+✅ Upcoming Events
+
+## 2️⃣ My Events Page
+
+📄 File:
+src/pages/organizer/MyEvents.jsx
+
+Features:
+✅ Fetch organizer own events from backend
+✅ Table view
+✅ Edit button
+✅ Delete button
 ✅ Search
 ✅ Pagination
-✅ Toast Notifications
 
-# 🎯 RECOMMENDED STARTING POINT FOR TOMORROW (DAY 8)
+## 3️⃣ Create Event Page
 
-## Organizer Dashboard
+📄 File:
+src/pages/organizer/CreateEvent.jsx
 
-Create organizer panel with:
+Features:
+✅ Form
+✅ Submit to backend
+✅ Success toast
 
-✅ My Events
-✅ Create Event
-✅ Update Event
-✅ Delete Own Event
-✅ My Bookings
-✅ Revenue Summary
+## 4️⃣ Event Slice
+
+Create Redux module:
+src/features/events/eventAPI.js
+src/features/events/eventSlice.js
+
+Thunks:
+fetchEvents
+createEvent
+updateEvent
+deleteEvent
+
+Then make dashboard beautiful.
