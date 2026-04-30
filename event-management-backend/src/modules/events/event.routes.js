@@ -8,6 +8,9 @@ const validate = require("../../middlewares/validate.middleware")
 const { createEventSchema, updateEventSchema } = require("./event.validator");
 
 router.get("/", controller.getAllEvents)
+
+router.get("/my-events", authMiddleware, roleMiddleware("ORGANIZER"), controller.getMyEvents);
+
 router.get("/:slug", controller.getEventBySlug)
 
 router.post("/", authMiddleware, roleMiddleware("ORGANIZER"), validate(createEventSchema), controller.createEvent)
@@ -15,6 +18,5 @@ router.post("/", authMiddleware, roleMiddleware("ORGANIZER"), validate(createEve
 router.put("/:id", authMiddleware, roleMiddleware("ORGANIZER"), validate(updateEventSchema), controller.updateEvent);
 
 router.delete("/:id", authMiddleware, roleMiddleware("ORGANIZER"), controller.deleteEvent);
-
 
 module.exports = router;

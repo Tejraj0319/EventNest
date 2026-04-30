@@ -30,6 +30,7 @@ const getUserBookings = async (req, res) => {
     }
 };
 
+// getEventBookings used to get booking for that particular event, but only if the user is the organizer of that event
 const getEventBookings = async (req, res) => {
     try {
         const bookings = await BookingService.getEventBookings(req.params.eventId, req.user.id);
@@ -82,11 +83,22 @@ const handleWebhook = async (req, res) => {
     res.status(200).json({ received: true });
 };
 
+const getMyBookings = async (req, res) => {
+    try {
+        const bookings = await BookingService.getMyBookings(req.user.id);
+        res.status(200).json({ success: true, data: bookings });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ success: false, message: error.message });
+    }
+}
+
 module.exports = {
     createBooking,
     cancelBooking,
     getUserBookings,
     getEventBookings,
+    getMyBookings,
     verifyPayment,
     handleWebhook
 };

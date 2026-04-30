@@ -8,6 +8,7 @@ import CreateEvent from "../pages/organizer/CreateEvent";
 
 import PrivateRoute from "../components/PrivateRoute";
 import OrganizerLayout from "../components/OrganizerLayout";
+import EditEvent from "../pages/organizer/EditEvent";
 
 const AppRoutes = () => {
   return (
@@ -40,6 +41,14 @@ const AppRoutes = () => {
             <OrganizerLayout>
               <CreateEvent />
             </OrganizerLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/edit-event/:id"
+        element={
+          <PrivateRoute>
+            <EditEvent />
           </PrivateRoute>
         }
       />

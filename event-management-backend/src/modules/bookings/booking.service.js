@@ -58,7 +58,6 @@ const createBooking = async (userId, data) => {
     })
 }
 
-
 const cancelBooking = async (userId, bookingId) => {
     return await prisma.$transaction(async (tx) => {
         const booking = await tx.booking.findUnique({
@@ -99,7 +98,6 @@ const cancelBooking = async (userId, bookingId) => {
     });
 };
 
-
 const getUserBookings = async (userId) => {
     return await prisma.booking.findMany({
         where: { userId },
@@ -111,7 +109,6 @@ const getUserBookings = async (userId) => {
         }
     });
 };
-
 
 // Organizer Only
 const getEventBookings = async (eventId, userId) => {
@@ -138,7 +135,6 @@ const getEventBookings = async (eventId, userId) => {
         }
     });
 };
-
 
 const verifyPayment = async (data) => {
     if (!data) {
@@ -248,11 +244,29 @@ const verifyPayment = async (data) => {
     });
 };
 
+const getMyBookings = async (userId) => {
+    return await prisma.booking.findMany({
+        where: {
+            event: {
+                organizerId: userId
+            }
+        },
+
+        include: {
+            user: true,
+            event: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
+}
 
 module.exports = {
     createBooking,
     cancelBooking,
     getUserBookings,
     getEventBookings,
-    verifyPayment
+    verifyPayment,
+    getMyBookings
 };

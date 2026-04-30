@@ -2,34 +2,33 @@ const prisma = require("../../config/db")
 const generateUniqueSlug = require('../../utils/slugify');
 
 const createEvent = async (data, user) => {
-    const slug = await generateUniqueSlug(data.title)
-    const event = await prisma.event.create({
-        data: {
-            title: data.title,
-            slug,
-            description: data.description,
-            location: data.location,
-            price: parseFloat(data.price),
-            totalSeats: parseInt(data.totalSeats),
-            availableSeats: parseInt(data.totalSeats),
-            date: new Date(data.date),
-            image: data.image || null,
-            organizerId: user.id
-        }
-    })
-    return event;
+  const slug = await generateUniqueSlug(data.title)
+  const event = await prisma.event.create({
+    data: {
+      title: data.title,
+      slug,
+      description: data.description,
+      location: data.location,
+      price: parseFloat(data.price),
+      totalSeats: parseInt(data.totalSeats),
+      availableSeats: parseInt(data.totalSeats),
+      date: new Date(data.date),
+      image: data.image || null,
+      organizerId: user.id
+    }
+  })
+  return event;
 }
 
 const getAllEvents = async () => {
-    const events = await prisma.event.findMany({ orderBy: { createdAt: "desc" } })
-    return events
+  const events = await prisma.event.findMany({ orderBy: { createdAt: "desc" } })
+  return events
 }
 
-
 const getEventBySlug = async (slug) => {
-    return prisma.event.findUnique({
-        where: { slug }
-    })
+  return prisma.event.findUnique({
+    where: { slug }
+  })
 }
 
 const updateEvent = async (id, data, user) => {
@@ -90,24 +89,31 @@ const updateEvent = async (id, data, user) => {
   return updatedEvent;
 };
 
-
 const deleteEvent = async (id, user) => {
-    const event = await prisma.event.findUnique({
-        where: { id: parseInt(id) }
-    });
-    if (!event) {
-        throw new Error("Event not found");
-    }
-    if (event.organizerId !== user.id) {
-        throw new Error("Unauthorized");
-    }
-    await prisma.event.delete({
-        where: { id: parseInt(id) }
-    });
-    return { message: "Event deleted successfully" };
+  const event = await prisma.event.findUnique({
+    where: { id: parseInt(id) }
+  });
+  if (!event) {
+    throw new Error("Event not found");
+  }
+  if (event.organizerId !== user.id) {
+    throw new Error("Unauthorized");
+  }
+  await prisma.event.delete({
+    where: { id: parseInt(id) }
+  });
+  return { message: "Event deleted successfully" };
 };
 
+const getMyEvents = async (user) => {
+  return await prisma.event.findMany({
+    where: {
+      organizerId: user.id
+    },
+    orderBy: { createdAt: "desc" }
+  })
+}
 
 module.exports = {
-    createEvent, getAllEvents, getEventBySlug, updateEvent, deleteEvent
+  createEvent, getAllEvents, getEventBySlug, updateEvent, deleteEvent, getMyEvents
 }
