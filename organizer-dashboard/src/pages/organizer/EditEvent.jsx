@@ -17,7 +17,8 @@ const EditEvent = () => {
     price: "",
     totalSeats: "",
     date: "",
-    image: "",  
+    image: "",
+    category: "",
   });
 
   // Fetch events if not already loaded
@@ -39,6 +40,7 @@ const EditEvent = () => {
         totalSeats: event.totalSeats,
         date: event.date?.slice(0, 16), // for datetime-local
         image: event.image || "",
+        category: event.category || "",
       });
     }
   }, [events, id]);
@@ -79,26 +81,75 @@ const EditEvent = () => {
       <h2>Edit Event</h2>
 
       <form onSubmit={handleSubmit}>
-        <input name="title" value={formData.title} onChange={handleChange} required />
-        <br /><br />
+        <input
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+        <br />
+        <br />
 
-        <textarea name="description" value={formData.description} onChange={handleChange} required />
-        <br /><br />
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+        />
+        <br />
+        <br />
 
-        <input name="location" value={formData.location} onChange={handleChange} required />
-        <br /><br />
+        <input
+          name="location"
+          value={formData.location}
+          onChange={handleChange}
+          required
+        />
+        <br />
+        <br />
 
-        <input type="number" name="price" value={formData.price} onChange={handleChange} required />
-        <br /><br />
+        <input
+          type="number"
+          name="price"
+          value={formData.price}
+          onChange={handleChange}
+          required
+        />
+        <br />
+        <br />
 
-        <input type="number" name="totalSeats" value={formData.totalSeats} onChange={handleChange} required />
-        <br /><br />
+        <input
+          type="number"
+          name="totalSeats"
+          value={formData.totalSeats}
+          onChange={handleChange}
+          required
+        />
+        <br />
+        <br />
 
-        <input type="datetime-local" name="date" value={formData.date} onChange={handleChange} required />
-        <br /><br />
+        <input
+          type="datetime-local"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+        />
+        <br />
+        <br />
+
+        <input
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          required
+        />
+        <br />
+        <br />
 
         <input name="image" value={formData.image} onChange={handleChange} />
-        <br /><br />
+        <br />
+        <br />
 
         <button type="submit" disabled={loading}>
           {loading ? "Updating..." : "Update Event"}

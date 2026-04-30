@@ -23,6 +23,9 @@ const SideBar = () => {
         <li>
           <Link to="/events">My Events </Link>
         </li>
+        <li>
+          <Link to="/bookings">My Bookings </Link>
+        </li>
       </ul>
       <button onClick={handleLogout}>Logout</button>
     </div>

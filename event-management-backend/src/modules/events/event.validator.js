@@ -7,7 +7,8 @@ const createEventSchema = Joi.object({
   price: Joi.number().min(0).required(),
   totalSeats: Joi.number().min(1).required(),
   date: Joi.date().required(),
-  image: Joi.string().optional()
+  category: Joi.string().required(),
+  image: Joi.string().optional(),
 });
 
 const updateEventSchema = Joi.object({
@@ -17,7 +18,8 @@ const updateEventSchema = Joi.object({
   price: Joi.number().min(0),
   totalSeats: Joi.number().min(1),
   date: Joi.date(),
-  image: Joi.string()
+  category: Joi.string(),
+  image: Joi.string(),
 });
 
 module.exports = {

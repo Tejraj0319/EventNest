@@ -19,6 +19,9 @@ router.get("/", authMiddleware, BookingController.getUserBookings);
 
 router.get("/my-bookings", authMiddleware, roleMiddleware("ORGANIZER"), BookingController.getMyBookings)
 
+
+router.post("/refund/:id", authMiddleware, roleMiddleware("ORGANIZER"), BookingController.refundBooking);
+
 // getEventBookings used to get booking for that particular event,only if the user is the organizer of that event
 router.get("/:eventId", authMiddleware, BookingController.getEventBookings);
 

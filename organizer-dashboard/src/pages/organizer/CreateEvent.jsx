@@ -16,30 +16,65 @@ const CreateEvent = () => {
     price: "",
     totalSeats: "",
     date: "",
-    image: "",
+    // image: "",
+    image: null,
+    category: "",
   });
 
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
   const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: files ? files[0] : value,
     });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const payload = {
+  //     title: formData.title,
+  //     description: formData.description,
+  //     location: formData.location,
+  //     price: Number(formData.price),
+  //     totalSeats: Number(formData.totalSeats),
+  //     date: new Date(formData.date).toISOString(),
+  //     category: formData.category,
+  //   };
+  //   if (formData.image.trim()) {
+  //     payload.image = formData.image;
+  //   }
+  //   const result = await dispatch(createEvent(payload));
+  //   if (result.meta.requestStatus === "fulfilled") {
+  //     alert("Event Created Successfully");
+  //     navigate("/events");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      title: formData.title,
-      description: formData.description,
-      location: formData.location,
-      price: Number(formData.price),
-      totalSeats: Number(formData.totalSeats),
-      date: new Date(formData.date).toISOString(),
-    };
-    if (formData.image.trim()) {
-      payload.image = formData.image;
+    const payload = new FormData();
+    payload.append("title", formData.title);
+    payload.append("description", formData.description);
+    payload.append("location", formData.location);
+    payload.append("price", formData.price);
+    payload.append("totalSeats", formData.totalSeats);
+    payload.append("date", new Date(formData.date).toISOString());
+    payload.append("category", formData.category);
+
+    if (formData.image) {
+      payload.append("image", formData.image);
     }
+
     const result = await dispatch(createEvent(payload));
+
     if (result.meta.requestStatus === "fulfilled") {
       alert("Event Created Successfully");
       navigate("/events");
@@ -98,7 +133,21 @@ const CreateEvent = () => {
         <br />
         <br />
 
-        <input name="image" placeholder="Image URL" onChange={handleChange} />
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={handleChange}
+        />
+        <br />
+        <br />
+
+        <input
+          name="category"
+          placeholder="Category"
+          onChange={handleChange}
+          required
+        />
         <br />
         <br />
 

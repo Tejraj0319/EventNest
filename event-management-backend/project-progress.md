@@ -136,3 +136,21 @@ Auth system completed
 * Improved frontend data flow to use `fetchMyEvents()` instead of public events API
 * Completed full Organizer Event CRUD + Dashboard functional module
 * Prepared next phase: Organizer Bookings Page (All bookings across organizer events), Search, Filter, Pagination, Refund flow
+
+----------------------------------------------------------------------------------------------------------
+
+📅 Day 10 Summary
+
+* Successfully implemented Cloudinary image upload for Organizer Event creation
+* Configured `cloudinary.js` using ENV credentials for secure media storage
+* Created `upload.middleware.js` using Multer diskStorage with 5MB limit
+* Updated backend Create Event route to support `multipart/form-data` with `upload.single("image")`
+* Modified `event.controller.js` to pass uploaded file (`req.file`) into service layer
+* Built image upload flow in `event.service.js` (temp upload → Cloudinary → save URL → delete local file)
+* Converted `CreateEvent.jsx` from image URL input to real file upload input
+* Implemented `FormData()` submission for all event fields + image file
+* Fixed frontend API bug by adding missing `return API.post(...)` in `eventAPI.js`
+* Resolved major Cloudinary timeout issue by switching memory upload to disk upload method
+* Added Windows DNS fix using `--dns-result-order=ipv4first` for stable Cloudinary connection
+* Successfully tested multiple event creations with uploaded images stored in Cloudinary
+* Organizer Create Event module now fully production-ready with image support

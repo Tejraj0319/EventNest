@@ -262,11 +262,64 @@ const getMyBookings = async (userId) => {
     })
 }
 
+const refundBooking = async (bookingId, organizerId) => {
+    bookingId = parseInt(bookingId);
+
+    const booking = await prisma.booking.findUnique({
+        where: { id: bookingId },
+        include: { event: true }
+    });
+
+    if (!booking) {
+        throw new Error("Booking not found");
+    }
+
+    if (booking.event.organizerId !== organizerId) {
+        throw new Error("Unauthorized");
+    }
+
+    if (booking.status !== "CONFIRMED") {
+        throw new Error("Only confirmed bookings can be refunded");
+    }
+
+    if (!booking.paymentId) {
+        throw new Error("Payment ID missing");
+    }
+
+    // await razorpay.payments.refund(booking.paymentId, {
+    //     amount: booking.totalPrice * 100
+    // });
+    
+    // Temporary test mode
+    console.log("Refund simulated for:", booking.paymentId);
+
+    const updatedBooking = await prisma.$transaction(async (tx) => {
+        await tx.event.update({
+            where: { id: booking.eventId },
+            data: {
+                availableSeats: {
+                    increment: booking.quantity
+                }
+            }
+        });
+
+        return await tx.booking.update({
+            where: { id: bookingId },
+            data: {
+                status: "REFUNDED"
+            }
+        });
+    });
+
+    return updatedBooking;
+};
+
 module.exports = {
     createBooking,
     cancelBooking,
     getUserBookings,
     getEventBookings,
     verifyPayment,
-    getMyBookings
+    getMyBookings,
+    refundBooking
 };

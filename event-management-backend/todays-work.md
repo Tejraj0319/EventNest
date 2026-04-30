@@ -1,161 +1,164 @@
-# 📅 Day 9 Summary – Organizer Dashboard Functional Build (Today Progress)
+📅 **Day 10 Summary — EventNest Project Progress**
 
-Today we focused fully on **Organizer Dashboard functionality** for EventNest using **React + Vite + Redux Toolkit** with existing **Node.js + Express + Prisma backend**.
+## ✅ Main Goal Completed Today
 
-# ✅ Frontend Features Completed
+Successfully implemented **Cloudinary Image Upload** for Event Creation.
+Now organizers can create events with image upload + event saved in DB.
 
-## 📁 Redux Events Module Created
+# ✅ Backend Work Done (`event-management-backend`)
 
-### Files Created
-src/features/events/eventAPI.js
-src/features/events/eventSlice.js
+## 📁 Files Updated
 
-### Functionalities Added
+### `src/config/cloudinary.js`
 
-✅ Fetch organizer events
-✅ Create event
-✅ Update event
-✅ Delete event
-✅ Loading / Error state management using Redux Toolkit
+Configured Cloudinary using ENV variables:
 
-# ✅ API Integration Completed
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
 
-### Backend Connected Routes
-GET    /api/v1/events
-GET    /api/v1/events/my-events
-POST   /api/v1/events
-PUT    /api/v1/events/:id
-DELETE /api/v1/events/:id
+### `src/middlewares/upload.middleware.js`
 
-JWT token auto attached using Axios interceptor.
+Implemented **multer diskStorage**:
 
-# ✅ Organizer Create Event Page Completed
+- uploads images temporarily into `/uploads`
+- custom filename using timestamp
+- max file size limit = 5MB
 
-### File Created
-src/pages/organizer/CreateEvent.jsx
+### `src/modules/events/event.routes.js`
 
-### Features
+Updated Create Event route:
+router.post(
+"/",
+authMiddleware,
+roleMiddleware("ORGANIZER"),
+upload.single("image"),
+controller.createEvent
+)
 
-✅ Controlled form inputs
-✅ Submit event to backend
-✅ Handles Joi validation payload correctly
-✅ Converts number/date fields properly
-✅ Optional image field handled correctly
-✅ Redirect after successful create
+Now accepts multipart/form-data image upload.
 
-# ✅ My Events Page Completed
+### `src/modules/events/event.controller.js`
 
-### File Created
-src/pages/organizer/MyEvents.jsx
+Updated createEvent controller:
+req.body
+req.user
+req.file
 
-### Features
+Passed file to service layer.
 
-✅ Fetch organizer own events only
-✅ Table listing
-✅ Search functionality
-✅ Pagination
-✅ Delete event
-✅ Edit button navigation
+### `src/modules/events/event.service.js`
 
-# ✅ Edit Event Page Completed
+Implemented full image upload flow:
+✅ Receive file from multer
+✅ Upload temp image to Cloudinary
+✅ Get secure_url
+✅ Delete local file from `/uploads`
+✅ Save Cloudinary URL in Prisma DB
 
-### File Created
-src/pages/organizer/EditEvent.jsx
+# ✅ Frontend Work Done (`organizer-dashboard`)
 
-### Features
+## 📁 Files Updated
 
-✅ Separate professional update page (`/edit-event/:id`)
-✅ Prefilled event form
-✅ Update event API integration
-✅ Redirect after update
+### `src/pages/organizer/CreateEvent.jsx`
 
-# ✅ Organizer Dashboard Page Completed
+Converted old text image URL field into real file upload:
+<input type="file" name="image" />
 
-### File Created
-src/pages/organizer/Dashboard.jsx
+Used `FormData()`:
 
-### Dashboard Cards Logic
+payload.append("image", file)
 
-✅ Total Events
-✅ Total Bookings
-✅ Total Revenue
-✅ Upcoming Events
+All event fields now sent as multipart/form-data.
 
-All stats based on organizer’s own events only.
+### `src/features/events/eventAPI.js`
 
-# ✅ Important Multi-Organizer Security Fix Completed
+Fixed create API:
+return API.post("/events", data)
 
-## Problem Found
+(Previously forgot return statement)
 
-Organizer A could see Organizer B events in My Events page.
+### `src/features/events/eventSlice.js`
 
-## Permanent Fix Implemented
+Create event thunk working successfully.
 
-### Backend New Secure Route Added
-GET /api/v1/events/my-events
+# ❌ Problems Faced Today
 
-### Files Updated
-src/modules/events/event.routes.js
-src/modules/events/event.controller.js
-src/modules/events/event.service.js
+## 1. Cloudinary Upload Timeout (499)
 
-### Prisma Logic
+Error:
+Request Timeout
+http_code: 499
 
-Returns only:
-where organizerId = loggedInUser.id
+### Cause:
 
-Now each organizer sees only their own events.
+Cloudinary network timeout from local machine.
 
-# ✅ Routing Updates Done
+### Fix Applied:
 
-### Route Added
-/                 -> Organizer Login
-/dashboard        -> Organizer Dashboard
-/events           -> My Events
-/create-event     -> Create Event
-/edit-event/:id   -> Edit Event
+✅ Switched from memoryStorage to diskStorage
+✅ Used file.path upload instead of buffer stream
+✅ Used:
+node --dns-result-order=ipv4first
 
-Protected using `PrivateRoute`.
+This fixed Windows DNS issue.
 
-# ✅ Current Organizer Dashboard Status
+## 2. Axios API Not Returning Response
 
-## Fully Working CRUD + Dashboard
+Cause:
+API.post(...)
 
-✅ Login
-✅ Auth + Role Protection
-✅ Persistent Login
-✅ Create Event
-✅ Read Own Events
-✅ Update Event
-✅ Delete Event
-✅ Dashboard Stats
-✅ Multi-organizer isolation
+without `return`
 
-# 🎯 Pending for Tomorrow (Day 10 Start Point)
+### Fixed:
 
-## Organizer Bookings Page
+return API.post(...)
 
-### Goal
+## 3. FormData Not Sending Properly
 
-Organizer should view bookings for their own events.
+Fixed by using:
+const payload = new FormData()
+payload.append(...)
 
-### Recommended Backend Route To Build
-GET /api/v1/bookings/my-bookings
+# ✅ Final Result Today
 
-### Tomorrow Features Planned
+✔ Organizer can create event
+✔ Upload image to Cloudinary
+✔ Image URL stored in MySQL via Prisma
+✔ Event visible in DB
+✔ Full backend/frontend integration working
 
-✅ View all bookings across organizer events
-✅ Search bookings
-✅ Pagination
-✅ Filter by status
-✅ Refund flow structure
-✅ Redux booking module
+# 🚀 Current Project Status
 
-### Likely Frontend Files Tomorrow
-src/features/bookings/bookingAPI.js
-src/features/bookings/bookingSlice.js
-src/pages/organizer/Bookings.jsx
+## Completed Modules
+
+### Public Side
+
+✔ Event listing
+✔ Event details
+✔ Booking flow
+✔ Razorpay payment
+✔ Ticket PDF + QR
+✔ Refund system
+
+### Admin Dashboard
+
+✔ Stats
+✔ Users management
+✔ Events management
+
+### Organizer Dashboard completed part
+
+✔ Login
+✔ Protected routes
+✔ My Events
+✔ My bookings
+✔ Create Event with Image Upload
+✔ edit event
+✔ delete event
+✔ dashboard stats:- Total Events: 4, Total Bookings: 2, Total Revenue: ₹500, Upcoming Events: 4
+✔ Logout
 
 
-Start with:
-Day 10 – Organizer Bookings Page (Option A: All bookings across organizer’s events)
+NOTE: Admin Dashboard, Organizer Dashboard is almost completed UI(styling) remaining 
+

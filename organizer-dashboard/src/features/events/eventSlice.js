@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import {
     fetchEventsAPI,
     createEventAPI,
@@ -108,6 +109,7 @@ const eventSlice = createSlice({
             // Create
             .addCase(createEvent.fulfilled, (state, action) => {
                 state.events.push(action.payload);
+                toast.success("Event created successfully");
             })
 
             // Delete

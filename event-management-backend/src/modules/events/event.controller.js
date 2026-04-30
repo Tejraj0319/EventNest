@@ -1,11 +1,25 @@
 const eventService = require("./event.service")
 
+// const createEvent = async (req, res) => {
+//     try {
+//         const event = await eventService.createEvent(req.body, req.user)
+//         console.log(req.body)
+//         res.status(201).json(event)
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// }
+
 const createEvent = async (req, res) => {
     try {
-        const event = await eventService.createEvent(req.body, req.user)
-        console.log(req.body)
-        res.status(201).json(event)
+        const event = await eventService.createEvent(
+            req.body,
+            req.user,
+            req.file
+        )
+        res.status(201).json(event);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
 }

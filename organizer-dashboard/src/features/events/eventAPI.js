@@ -14,7 +14,11 @@ API.interceptors.request.use((req) => {
 
 export const fetchEventsAPI = () => API.get("/events");
 
-export const createEventAPI = (data) => API.post("/events", data);
+// export const createEventAPI = (data) => API.post("/events", data);
+
+export const createEventAPI = (data) => {
+    return API.post("/events", data);
+}
 
 export const deleteEventAPI = (id) => API.delete(`/events/${id}`);
 

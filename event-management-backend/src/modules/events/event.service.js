@@ -1,9 +1,45 @@
 const prisma = require("../../config/db")
 const generateUniqueSlug = require('../../utils/slugify');
+const cloudinary = require("../../config/cloudinary");
+const streamifier = require("streamifier");
+const fs = require("fs");
 
-const createEvent = async (data, user) => {
-  const slug = await generateUniqueSlug(data.title)
-  const event = await prisma.event.create({
+// const createEvent = async (data, user) => {
+//   const slug = await generateUniqueSlug(data.title)
+//   const event = await prisma.event.create({
+//     data: {
+//       title: data.title,
+//       slug,
+//       description: data.description,
+//       location: data.location,
+//       price: parseFloat(data.price),
+//       totalSeats: parseInt(data.totalSeats),
+//       availableSeats: parseInt(data.totalSeats),
+//       date: new Date(data.date),
+//       image: data.image || null,
+//       category: data.category,
+//       organizerId: user.id
+//     }
+//   })
+//   return event;
+// }
+
+const createEvent = async (data, user, file) => {
+  const slug = await generateUniqueSlug(data.title);
+  let imageUrl = null;
+  
+  if (file) {
+    const uploadedImage = await cloudinary.uploader.upload(file.path, {
+      folder: "EventNest/events",
+      resource_type: "image",
+    });
+
+    imageUrl = uploadedImage.secure_url;
+
+    fs.unlinkSync(file.path);
+  }
+
+  return await prisma.event.create({
     data: {
       title: data.title,
       slug,
@@ -13,12 +49,12 @@ const createEvent = async (data, user) => {
       totalSeats: parseInt(data.totalSeats),
       availableSeats: parseInt(data.totalSeats),
       date: new Date(data.date),
-      image: data.image || null,
+      image: imageUrl,
+      category: data.category,
       organizerId: user.id
     }
-  })
-  return event;
-}
+  });
+};
 
 const getAllEvents = async () => {
   const events = await prisma.event.findMany({ orderBy: { createdAt: "desc" } })
@@ -57,6 +93,7 @@ const updateEvent = async (id, data, user) => {
   if (data.description) updatedData.description = data.description;
   if (data.location) updatedData.location = data.location;
   if (data.image !== undefined) updatedData.image = data.image;
+  if (data.category) updatedData.category = data.category;
 
   if (data.price !== undefined) {
     updatedData.price = parseFloat(data.price);

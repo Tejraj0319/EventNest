@@ -93,6 +93,27 @@ const getMyBookings = async (req, res) => {
     }
 }
 
+const refundBooking = async (req, res) => {
+    try {
+        const data = await BookingService.refundBooking(
+            req.params.id,
+            req.user.id
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Refund successful",
+            data
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createBooking,
     cancelBooking,
@@ -100,5 +121,6 @@ module.exports = {
     getEventBookings,
     getMyBookings,
     verifyPayment,
-    handleWebhook
+    handleWebhook,
+    refundBooking
 };

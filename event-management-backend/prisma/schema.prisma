@@ -22,13 +22,14 @@ model Event {
   id             Int       @id @default(autoincrement())
   title          String
   slug           String    @unique
-  description    String
+  description    String    @db.Text
   location       String
   price          Float
   totalSeats     Int
   availableSeats Int
   date           DateTime
   image          String?
+  category       String    @default("General")
   organizerId    Int
   organizer      User      @relation(fields: [organizerId], references: [id])
   bookings       Booking[]

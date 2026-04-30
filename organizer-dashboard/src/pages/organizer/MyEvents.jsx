@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEvents, deleteEvent, fetchMyEvents } from "../../features/events/eventSlice";
+import {
+  fetchEvents,
+  deleteEvent,
+  fetchMyEvents,
+} from "../../features/events/eventSlice";
 import { useNavigate } from "react-router-dom";
 
 const MyEvents = () => {
@@ -59,6 +63,7 @@ const MyEvents = () => {
             <th>Seats</th>
             <th>Available Seats</th>
             <th>Action</th>
+            <th>category</th>
           </tr>
         </thead>
         <tbody>
@@ -76,6 +81,7 @@ const MyEvents = () => {
                   Edit
                 </button>
               </td>
+              <td>{event.category}</td>
             </tr>
           ))}
         </tbody>
@@ -100,7 +106,6 @@ const MyEvents = () => {
 };
 
 export default MyEvents;
-
 
 // Frontend Login → Token Saved
 //         ↓
