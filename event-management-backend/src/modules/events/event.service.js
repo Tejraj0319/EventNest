@@ -27,11 +27,12 @@ const fs = require("fs");
 const createEvent = async (data, user, file) => {
   const slug = await generateUniqueSlug(data.title);
   let imageUrl = null;
-  
+
   if (file) {
     const uploadedImage = await cloudinary.uploader.upload(file.path, {
       folder: "EventNest/events",
       resource_type: "image",
+      timeout: 120000
     });
 
     imageUrl = uploadedImage.secure_url;

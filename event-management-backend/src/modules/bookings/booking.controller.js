@@ -3,51 +3,29 @@ const BookingService = require("./booking.service")
 const crypto = require("crypto");
 
 const createBooking = async (req, res) => {
-    try {
-        const booking = await BookingService.createBooking(req.user.id, req.body)
-        res.status(201).json({ success: true, data: booking });
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ success: false, message: error.message });
-    }
+    const booking = await BookingService.createBooking(req.user.id, req.body)
+    res.status(201).json({ success: true, data: booking });
 }
 
 const cancelBooking = async (req, res) => {
-    try {
-        const booking = await BookingService.cancelBooking(req.user.id, parseInt(req.params.id));
-        res.status(200).json({ success: true, data: booking });
-    } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-    }
+    const booking = await BookingService.cancelBooking(req.user.id, parseInt(req.params.id));
+    res.status(200).json({ success: true, data: booking });
 };
 
 const getUserBookings = async (req, res) => {
-    try {
-        const bookings = await BookingService.getUserBookings(req.user.id);
-        res.status(200).json({ success: true, data: bookings });
-    } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-    }
+    const bookings = await BookingService.getUserBookings(req.user.id);
+    res.status(200).json({ success: true, data: bookings });
 };
 
 // getEventBookings used to get booking for that particular event, but only if the user is the organizer of that event
 const getEventBookings = async (req, res) => {
-    try {
-        const bookings = await BookingService.getEventBookings(req.params.eventId, req.user.id);
-        res.status(200).json({ success: true, data: bookings });
-    } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-    }
+    const bookings = await BookingService.getEventBookings(req.params.eventId, req.user.id);
+    res.status(200).json({ success: true, data: bookings });
 };
 
 const verifyPayment = async (req, res) => {
-    try {
-        const bookings = await BookingService.verifyPayment(req.body)
-        return res.status(200).json({ success: true, message: "Payment successful, booking confirmed", data: bookings })
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ success: false, message: error.message });
-    }
+    const bookings = await BookingService.verifyPayment(req.body)
+    return res.status(200).json({ success: true, message: "Payment successful, booking confirmed", data: bookings })
 }
 
 const handleWebhook = async (req, res) => {
@@ -84,34 +62,20 @@ const handleWebhook = async (req, res) => {
 };
 
 const getMyBookings = async (req, res) => {
-    try {
-        const bookings = await BookingService.getMyBookings(req.user.id);
-        res.status(200).json({ success: true, data: bookings });
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ success: false, message: error.message });
-    }
+    const bookings = await BookingService.getMyBookings(req.user.id);
+    res.status(200).json({ success: true, data: bookings });
 }
 
 const refundBooking = async (req, res) => {
-    try {
-        const data = await BookingService.refundBooking(
-            req.params.id,
-            req.user.id
-        );
-
-        res.status(200).json({
-            success: true,
-            message: "Refund successful",
-            data
-        });
-
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
+    const data = await BookingService.refundBooking(
+        req.params.id,
+        req.user.id
+    );
+    res.status(200).json({
+        success: true,
+        message: "Refund successful",
+        data
+    });
 };
 
 module.exports = {

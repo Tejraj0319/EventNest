@@ -2,8 +2,6 @@ const cron = require("node-cron");
 const prisma = require("../config/db");
 
 cron.schedule("*/5 * * * *", async () => {
-    console.log("Running expire bookings job...");
-
     const expiredBookings = await prisma.booking.findMany({
         where: {
             status: "PENDING",
@@ -25,7 +23,5 @@ cron.schedule("*/5 * * * *", async () => {
             });
 
         });
-
-        console.log(`Booking expired: ${booking.id}`);
     }
 });
