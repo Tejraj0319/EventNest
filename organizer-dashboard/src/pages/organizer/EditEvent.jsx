@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEvent, fetchEvents } from "../../features/events/eventSlice";
@@ -21,16 +22,17 @@ const EditEvent = () => {
     category: "",
   });
 
-  // Fetch events if not already loaded
+  // Fetch events if not loaded
   useEffect(() => {
     if (events.length === 0) {
       dispatch(fetchEvents());
     }
   }, [dispatch, events.length]);
 
-  // Find current event
+  // Find event
   useEffect(() => {
     const event = events.find((e) => e.id === Number(id));
+
     if (event) {
       setFormData({
         title: event.title,
@@ -38,7 +40,7 @@ const EditEvent = () => {
         location: event.location,
         price: event.price,
         totalSeats: event.totalSeats,
-        date: event.date?.slice(0, 16), // for datetime-local
+        date: event.date?.slice(0, 16),
         image: event.image || "",
         category: event.category || "",
       });
@@ -74,86 +76,169 @@ const EditEvent = () => {
     }
   };
 
-  if (loading) return <h2>Loading...</h2>;
+  if (loading)
+    return (
+      <div className="text-center py-10 text-cyan-400 text-lg font-semibold">
+        Loading...
+      </div>
+    );
 
   return (
-    <div>
-      <h2>Edit Event</h2>
+    <div className="w-full text-white">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold">
+          Edit Event
+        </h2>
+        <p className="text-slate-400 mt-1 text-sm">
+          Update your event details and save changes.
+        </p>
+      </div>
 
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-6"
+      >
+        {/* 2 Column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-        <input
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+          {/* Title */}
+          <div>
+            <label className="block mb-2 text-sm text-slate-300">
+              Event Title
+            </label>
+            <input
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
+            />
+          </div>
 
-        <input
-          type="number"
-          name="price"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+          {/* Location */}
+          <div>
+            <label className="block mb-2 text-sm text-slate-300">
+              Location
+            </label>
+            <input
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
+            />
+          </div>
 
-        <input
-          type="number"
-          name="totalSeats"
-          value={formData.totalSeats}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+          {/* Price */}
+          <div>
+            <label className="block mb-2 text-sm text-slate-300">
+              Price
+            </label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
+            />
+          </div>
 
-        <input
-          type="datetime-local"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+          {/* Seats */}
+          <div>
+            <label className="block mb-2 text-sm text-slate-300">
+              Total Seats
+            </label>
+            <input
+              type="number"
+              name="totalSeats"
+              value={formData.totalSeats}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
+            />
+          </div>
 
-        <input
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
+          {/* Date */}
+          <div>
+            <label className="block mb-2 text-sm text-slate-300">
+              Event Date
+            </label>
+            <input
+              type="datetime-local"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
+            />
+          </div>
 
-        <input name="image" value={formData.image} onChange={handleChange} />
-        <br />
-        <br />
+          {/* Category */}
+          <div>
+            <label className="block mb-2 text-sm text-slate-300">
+              Category
+            </label>
+            <input
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
+            />
+          </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Updating..." : "Update Event"}
-        </button>
+          {/* Image URL */}
+          <div className="md:col-span-2">
+            <label className="block mb-2 text-sm text-slate-300">
+              Image URL
+            </label>
+            <input
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+              placeholder="https://..."
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
+            />
+          </div>
+
+          {/* Description */}
+          <div className="md:col-span-2">
+            <label className="block mb-2 text-sm text-slate-300">
+              Description
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+              rows="5"
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white resize-none focus:border-cyan-500 outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 mt-6">
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-black font-semibold transition"
+          >
+            {loading ? "Updating..." : "Update Event"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate("/events")}
+            className="px-6 py-3 rounded-xl bg-slate-800 border border-slate-700 hover:bg-slate-700 transition"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );
