@@ -204,3 +204,19 @@ Auth system completed
 * Decided premium light-theme modern UI for customer-facing public website
 * Prepared Day 14 execution roadmap for setup, installations, routing, Redux, Navbar & Footer foundation
 * Public Dashboard development strategy now finalized and ready for implementation
+
+----------------------------------------------------------------------------------------------------------
+
+📅 Day 14 Summary
+
+* Started Public Dashboard frontend using React + Vite
+* Installed React Router, Redux Toolkit, React Redux & Axios
+* Created scalable frontend folder structure
+* Configured Redux store and connected app with Provider
+* Setup React Router with AppRoutes architecture
+* Created reusable Axios instance with JWT interceptor
+* Built Auth module with Register/Login API integration
+* Implemented authSlice with async thunks and localStorage persistence
+* Built functional Login page connected to Redux
+* Added login redirect flow to Home page
+* Created MainLayout landing page and fixed blank page return issue

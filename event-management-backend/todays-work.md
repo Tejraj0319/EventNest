@@ -1,108 +1,82 @@
-📅 **Day 13 Planning Summary – Public Dashboard Kickoff**
+📅 **Day 14 Summary – Public Dashboard Functional Setup Started**
 
 ## ✅ Today’s Progress
 
-* Completed strategic planning for the **Public Dashboard (User Side Website)** as the next phase of the Event Booking System.
-* Finalized architecture decision to create a **separate frontend project** for public users, keeping Admin, Organizer, and Public dashboards independently scalable.
-* Defined professional multi-project structure:
+* Successfully started **Public Dashboard** frontend project for Event Booking System
+* Completed base project setup using **React + Vite**
+* Installed core dependencies for scalable frontend architecture:
 
-```text
-event-booking-system/
-├── backend/
-├── admin-dashboard/
-├── organizer-dashboard/
-└── public-dashboard/
+  * React Router DOM
+  * Redux Toolkit + React Redux
+  * Axios
+
+## 📁 Project Architecture Setup
+
+* Created clean scalable folder structure:
+
+```text id="t3f7g0"
+src/
+├── app/
+├── api/
+├── features/
+├── components/
+├── layouts/
+├── pages/
+├── routes/
+├── utils/
 ```
 
-* Discussed complete **Public Dashboard user flow**:
+## ⚙ Core Configuration Completed
 
-  * Homepage → Browse Events → Event Details → Login/Register → Book Tickets → Payment → My Bookings
-* Identified that major backend APIs are already ready and reusable:
+* Configured Redux store
+* Connected store with React app using Provider
+* Configured React Router with AppRoutes structure
+* Setup reusable Axios instance with backend base URL
+* Added Axios interceptor for automatic JWT token in Authorization header
 
-  * Auth APIs
-  * Events APIs
-  * Booking APIs
-  * Razorpay Payment APIs
-  * Ticket PDF + Email system
+## 🔐 Auth Module Implemented
 
-## 🏗 Finalized Public Dashboard Tech Stack
+* Created `authAPI.js` for Register/Login API calls
+* Created `authSlice.js` using Redux Toolkit
+* Implemented async thunks:
 
-* React + Vite
-* Redux Toolkit
-* React Router DOM
-* Axios
-* Tailwind CSS
-* React Toastify
-* Framer Motion
-* Lucide Icons
+  * `registerUser`
+  * `loginUser`
 
-## 📁 Approved Professional Frontend Structure
+## 🧠 Auth State Management Completed
 
+* Login loading state
+* Error state handling
+* User state management
+* JWT token storage in localStorage
+* Persist login after page refresh
+* Logout reducer ready
 
-src/
-│
-├── app/
-│   └── store.js
-│
-├── api/
-│   └── axios.js
-│
-├── features/
-│   ├── auth/
-│   ├── events/
-│   └── bookings/
-│
-├── components/
-│   ├── Navbar.jsx
-│   ├── Footer.jsx
-│   ├── EventCard.jsx
-│   ├── Loader.jsx
-│   └── ProtectedRoute.jsx
-│
-├── layouts/
-│   └── MainLayout.jsx
-│
-├── pages/
-│   ├── Home.jsx
-│   ├── Events.jsx
-│   ├── EventDetails.jsx
-│   ├── Login.jsx
-│   ├── Register.jsx
-│   ├── MyBookings.jsx
-│   ├── Profile.jsx
-│   └── NotFound.jsx
-│
-├── routes/
-│   └── AppRoutes.jsx
-│
-├── utils/
-│   └── helpers.js
-│
-├── App.jsx
-├── main.jsx
-└── index.css
+## 📝 Login Page Functional Build
 
-## 🎯 Tomorrow’s Execution Plan (Day 14)
+* Built functional Login page
+* Controlled form inputs
+* Connected Login form with Redux auth flow
+* Successful login redirects user to Home page (`/`)
 
-### Setup Phase
+## 🏠 Main Layout Initialized
 
-* Create `public-dashboard` project using Vite
-* Install all required dependencies
-* Configure Tailwind CSS
-* Create scalable folder structure
-* Setup Axios base API config
-* Setup Redux store
-* Setup Router architecture
+* Created MainLayout route as landing page after login
+* Fixed blank page issue caused by incorrect `return` syntax
 
-### UI Base Phase
+## 🎯 Current System Status
 
-* Create professional Navbar
-* Create Footer
-* Create Main Layout
-* Prepare Home Page foundation
+✔ Public frontend setup complete
+✔ Routing ready
+✔ Redux ready
+✔ JWT auth working
+✔ Login flow working
+✔ Redirect flow working
 
-## 🚀 Starting Command for Tomorrow
+## 🚀 Next Recommended Steps (Day 15)
 
-Use this summary and say:
-
-> Continue Day 14 Public Dashboard Setup from where we stopped.
+* Build Register page
+* Create ProtectedRoute
+* Dynamic Navbar (Login / Logout / User)
+* Events listing API + slice
+* Homepage functional event cards
