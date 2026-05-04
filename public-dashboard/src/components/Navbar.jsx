@@ -18,7 +18,7 @@ const Navbar = () => {
       
       {/* Logo / Brand */}
       <h1 className="text-xl font-bold">
-        <Link to="/">EventApp</Link>
+        <Link to="/">EventNest</Link>
       </h1>
 
       {/* Links */}
