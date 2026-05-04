@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const Login = () => {
   return (
     <div>
       <h1>Login Page</h1>
+
       {error && <p>{error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -57,6 +59,10 @@ const Login = () => {
           />
         </div>
         <button type="submit">{loading ? "Loading..." : "login"}</button>
+
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </form>
     </div>
   );

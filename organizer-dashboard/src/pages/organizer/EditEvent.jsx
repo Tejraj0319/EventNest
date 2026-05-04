@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEvent, fetchEvents } from "../../features/events/eventSlice";
@@ -18,7 +17,7 @@ const EditEvent = () => {
     price: "",
     totalSeats: "",
     date: "",
-    image: "",
+    image: null,
     category: "",
   });
 
@@ -56,16 +55,16 @@ const EditEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const payload = {
-      ...formData,
-      price: Number(formData.price),
-      totalSeats: Number(formData.totalSeats),
-      date: new Date(formData.date).toISOString(),
-    };
-
-    if (!formData.image.trim()) {
-      delete payload.image;
+    const payload = new FormData();
+    payload.append("title", formData.title);
+    payload.append("description", formData.description);
+    payload.append("location", formData.location);
+    payload.append("price", formData.price);
+    payload.append("totalSeats", formData.totalSeats);
+    payload.append("date", formData.date);
+    payload.append("category", formData.category);
+    if (formData.image) {
+      payload.append("image", formData.image);
     }
 
     const result = await dispatch(updateEvent({ id, data: payload }));
@@ -85,12 +84,9 @@ const EditEvent = () => {
 
   return (
     <div className="w-full text-white">
-
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold">
-          Edit Event
-        </h2>
+        <h2 className="text-2xl md:text-3xl font-bold">Edit Event</h2>
         <p className="text-slate-400 mt-1 text-sm">
           Update your event details and save changes.
         </p>
@@ -103,7 +99,6 @@ const EditEvent = () => {
       >
         {/* 2 Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
           {/* Title */}
           <div>
             <label className="block mb-2 text-sm text-slate-300">
@@ -134,9 +129,7 @@ const EditEvent = () => {
 
           {/* Price */}
           <div>
-            <label className="block mb-2 text-sm text-slate-300">
-              Price
-            </label>
+            <label className="block mb-2 text-sm text-slate-300">Price</label>
             <input
               type="number"
               name="price"
@@ -197,10 +190,14 @@ const EditEvent = () => {
               Image URL
             </label>
             <input
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              placeholder="https://..."
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  image: e.target.files[0],
+                })
+              }
               className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-cyan-500 outline-none"
             />
           </div>

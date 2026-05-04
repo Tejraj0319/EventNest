@@ -9,7 +9,7 @@ const createEvent = async (req, res) => {
     const event = await eventService.createEvent(
         req.body,
         req.user,
-        req.file
+        req.file,
     )
     res.status(201).json(event);
 }
@@ -32,7 +32,8 @@ const updateEvent = async (req, res) => {
     const event = await eventService.updateEvent(
         req.params.id,
         req.body,
-        req.user
+        req.user, 
+        req.file
     );
     res.status(200).json(event);
 };

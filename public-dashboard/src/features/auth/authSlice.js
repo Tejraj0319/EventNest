@@ -9,6 +9,7 @@ const initialState = {
     token: token || null,
     loading: false,
     error: null,
+    success: false,
 }
 
 // REGISTER
@@ -16,7 +17,7 @@ export const registerUser = createAsyncThunk(
     "auth/registerUser",
     async (formData, thunkAPI) => {
         try {
-            return await registerUserAPI(FormData)
+            return await registerUserAPI(formData)
         } catch (error) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Register failed"
@@ -60,6 +61,7 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.loading = false;
+                state.success = true;
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;

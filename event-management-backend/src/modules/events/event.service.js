@@ -68,7 +68,66 @@ const getEventBySlug = async (slug) => {
   })
 }
 
-const updateEvent = async (id, data, user) => {
+// const updateEvent = async (id, data, user) => {
+//   const event = await prisma.event.findUnique({
+//     where: { id: parseInt(id) }
+//   });
+
+//   if (!event) {
+//     throw new Error("Event not found");
+//   }
+
+//   if (event.organizerId !== user.id) {
+//     throw new Error("Unauthorized");
+//   }
+
+//   let updatedData = {};
+
+//   if (data.title) {
+//     updatedData.title = data.title;
+
+//     if (data.title !== event.title) {
+//       updatedData.slug = await generateUniqueSlug(data.title);
+//     }
+//   }
+
+//   if (data.description) updatedData.description = data.description;
+//   if (data.location) updatedData.location = data.location;
+//   if (data.image !== undefined) updatedData.image = data.image;
+//   if (data.category) updatedData.category = data.category;
+
+//   if (data.price !== undefined) {
+//     updatedData.price = parseFloat(data.price);
+//   }
+
+//   if (data.date) {
+//     updatedData.date = new Date(data.date);
+//   }
+
+//   if (data.totalSeats !== undefined) {
+//     const newTotalSeats = parseInt(data.totalSeats);
+
+//     const bookedSeats = event.totalSeats - event.availableSeats;
+
+//     if (newTotalSeats < bookedSeats) {
+//       throw new Error(
+//         `Cannot reduce seats below already booked (${bookedSeats})`
+//       );
+//     }
+
+//     updatedData.totalSeats = newTotalSeats;
+//     updatedData.availableSeats = newTotalSeats - bookedSeats;
+//   }
+
+//   const updatedEvent = await prisma.event.update({
+//     where: { id: parseInt(id) },
+//     data: updatedData
+//   });
+
+//   return updatedEvent;
+// };
+
+const updateEvent = async (id, data, user, file) => {
   const event = await prisma.event.findUnique({
     where: { id: parseInt(id) }
   });
@@ -83,6 +142,7 @@ const updateEvent = async (id, data, user) => {
 
   let updatedData = {};
 
+  // title + slug
   if (data.title) {
     updatedData.title = data.title;
 
@@ -93,7 +153,6 @@ const updateEvent = async (id, data, user) => {
 
   if (data.description) updatedData.description = data.description;
   if (data.location) updatedData.location = data.location;
-  if (data.image !== undefined) updatedData.image = data.image;
   if (data.category) updatedData.category = data.category;
 
   if (data.price !== undefined) {
@@ -104,9 +163,9 @@ const updateEvent = async (id, data, user) => {
     updatedData.date = new Date(data.date);
   }
 
+  // seats logic
   if (data.totalSeats !== undefined) {
     const newTotalSeats = parseInt(data.totalSeats);
-
     const bookedSeats = event.totalSeats - event.availableSeats;
 
     if (newTotalSeats < bookedSeats) {
@@ -117,6 +176,19 @@ const updateEvent = async (id, data, user) => {
 
     updatedData.totalSeats = newTotalSeats;
     updatedData.availableSeats = newTotalSeats - bookedSeats;
+  }
+
+  // IMAGE UPLOAD FIX (NEW PART)
+  if (file) {
+    const uploadedImage = await cloudinary.uploader.upload(file.path, {
+      folder: "EventNest/events",
+      resource_type: "image",
+      timeout: 120000
+    });
+
+    updatedData.image = uploadedImage.secure_url;
+
+    fs.unlinkSync(file.path); // cleanup local file
   }
 
   const updatedEvent = await prisma.event.update({

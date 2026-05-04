@@ -16,7 +16,13 @@ router.get("/:slug", controller.getEventBySlug)
 
 router.post("/", authMiddleware, roleMiddleware("ORGANIZER"), upload.single("image"), controller.createEvent)
 
-router.put("/:id", authMiddleware, roleMiddleware("ORGANIZER"), validate(updateEventSchema), controller.updateEvent);
+router.put(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("ORGANIZER"),
+    upload.single("image"),
+    controller.updateEvent
+);
 
 router.delete("/:id", authMiddleware, roleMiddleware("ORGANIZER"), controller.deleteEvent);
 

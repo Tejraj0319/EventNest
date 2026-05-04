@@ -22,6 +22,6 @@ export const createEventAPI = (data) => {
 
 export const deleteEventAPI = (id) => API.delete(`/events/${id}`);
 
-export const updateEventAPI = (id, data) => API.put(`/events/${id}`, data);
+export const updateEventAPI = (id, data) => {return API.put(`/events/${id}`, data);};
 
 export const fetchMyEventsAPI = () => API.get("/events/my-events")
