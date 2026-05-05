@@ -7,6 +7,8 @@ import EventDetails from "../pages/EventDetails";
 import ProtectedRoute from "../components/ProtectedRoute";
 import BecomeOrganizer from "../pages/BecomeOrganizer";
 import About from "../pages/About";
+import Home from "../pages/Home";
+import MyBookings from "../pages/MyBookings";
 
 const AppRoutes = () => {
   return (
@@ -19,10 +21,12 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Events />} />
+        <Route index element={<Home />} />
+        <Route path="events" element={<Events />} />
         <Route path="events/:id" element={<EventDetails />} />
         <Route path="become-organizer" element={<BecomeOrganizer />} />
         <Route path="about" element={<About />} />
+        <Route path="my-bookings" element={<MyBookings/>} />
       </Route>
 
       <Route path="/login" element={<Login />} />

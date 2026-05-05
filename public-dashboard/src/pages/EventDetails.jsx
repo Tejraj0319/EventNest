@@ -31,10 +31,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchEventById } from "../features/events/eventsSlice";
+import { useState } from "react";
+import {
+  createBooking,
+  verifyPayment,
+} from "../features/bookings/bookingSlice";
 
 const EventDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
 
   const { selectedEvent, loading, error } = useSelector(
     (state) => state.events,
@@ -49,6 +55,45 @@ const EventDetails = () => {
   if (loading) return <p className="text-white p-6">Loading...</p>;
   if (error) return <p className="text-red-500 p-6">{error}</p>;
   if (!selectedEvent) return <p className="text-white p-6">No event found</p>;
+
+  const handleBooking = async () => {
+    try {
+      const res = await dispatch(
+        createBooking({
+          eventId: selectedEvent.id,
+          quantity,
+        }),
+      ).unwrap();
+
+      const booking = res.data;
+
+      const options = {
+        key: "rzp_test_SgV9hKCxHtxy2j",
+        amount: booking.totalPrice * 100,
+        currency: "INR",
+        name: selectedEvent.title,
+        description: "Event Booking",
+        order_id: booking.orderId,
+
+        handler: async function (response) {
+          await dispatch(
+            verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          );
+
+          alert("Booking Confirmed!");
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      alert(err);
+    }
+  };
 
   return (
     <div className="bg-black text-white min-h-screen">
@@ -110,7 +155,37 @@ const EventDetails = () => {
               <p className="text-red-400 text-sm mb-2">⚠ Few seats left!</p>
             )}
 
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-3 mt-3">
+              <button
+                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                className="px-3 py-1 bg-gray-700 rounded"
+              >
+                -
+              </button>
+
+              <span>{quantity}</span>
+
+              <button
+                onClick={() =>
+                  setQuantity((prev) =>
+                    prev < selectedEvent.availableSeats ? prev + 1 : prev,
+                  )
+                }
+                className="px-3 py-1 bg-gray-700 rounded"
+              >
+                +
+              </button>
+            </div>
+
+            {/* Total Price */}
+            <p className="mt-2 text-sm text-gray-400">
+              Total: ₹ {selectedEvent.price * quantity}
+            </p>
+
+            {/* Book Button */}
             <button
+              onClick={handleBooking}
               className="w-full bg-white text-black py-2 rounded-lg font-semibold mt-3 hover:bg-gray-200 transition"
               disabled={selectedEvent.availableSeats === 0}
             >
