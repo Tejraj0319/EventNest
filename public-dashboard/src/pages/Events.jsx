@@ -51,7 +51,7 @@ const Events = () => {
       <div className="flex flex-col md:flex-row gap-6">
         
         {/* 🔹 LEFT FILTER */}
-        <div className="md:w-1/4 md:sticky md:top-4 h-fit">
+        <div className="md:w-1/4 md:sticky md:top-17 h-fit">
           <h2 className="font-semibold mb-2">Categories</h2>
 
           <div className="flex flex-wrap gap-2">

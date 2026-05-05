@@ -74,6 +74,11 @@ const Sidebar = () => {
       icon: <LayoutDashboard size={18} />,
     },
     {
+      name:"OrganizerRequests",
+      path: "/organizer-requests",
+      icon: <Users size={18} />,
+    },
+    {
       name: "Users",
       path: "/users",
       icon: <Users size={18} />,

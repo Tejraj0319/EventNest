@@ -5,6 +5,8 @@ import Register from "../pages/Register";
 import Events from "../pages/Events";
 import EventDetails from "../pages/EventDetails";
 import ProtectedRoute from "../components/ProtectedRoute";
+import BecomeOrganizer from "../pages/BecomeOrganizer";
+import About from "../pages/About";
 
 const AppRoutes = () => {
   return (
@@ -19,6 +21,8 @@ const AppRoutes = () => {
       >
         <Route index element={<Events />} />
         <Route path="events/:id" element={<EventDetails />} />
+        <Route path="become-organizer" element={<BecomeOrganizer />} />
+        <Route path="about" element={<About />} />
       </Route>
 
       <Route path="/login" element={<Login />} />

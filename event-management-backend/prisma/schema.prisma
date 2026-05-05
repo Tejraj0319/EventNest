@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  role      String
-  events    Event[]
-  bookings  Booking[]
-  isBlocked Boolean   @default(false)
-  createdAt DateTime  @default(now())
+  id                Int                @id @default(autoincrement())
+  email             String             @unique
+  password          String
+  role              String
+  events            Event[]
+  bookings          Booking[]
+  organizerRequests OrganizerRequest[]
+  isBlocked         Boolean            @default(false)
+  createdAt         DateTime           @default(now())
 }
 
 model Event {
@@ -53,4 +54,21 @@ model Booking {
   user      User     @relation(fields: [userId], references: [id])
   event     Event    @relation(fields: [eventId], references: [id])
   createdAt DateTime @default(now())
+}
+
+model OrganizerRequest {
+  id           Int     @id @default(autoincrement())
+  userId       Int
+  fullName     String
+  phone        String
+  organization String?
+  experience   String  @db.Text
+  eventType    String
+  message      String? @db.Text
+  status       String  @default("PENDING")
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

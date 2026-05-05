@@ -223,7 +223,7 @@ Auth system completed
 
 ----------------------------------------------------------------------------------------------------------
 
-📅 **Day 15 Summary**
+📅 Day 15 Summary
 
 * Enhanced Events page with search, category filters & pagination
 * Implemented responsive grid layout (4x3 desktop, 2 mobile)
@@ -232,3 +232,20 @@ Auth system completed
 * Fixed long description formatting with proper spacing & readability
 * Added sticky booking card with seat info, warnings & disabled state
 * Applied smooth animations and refined dark UI for better UX
+
+----------------------------------------------------------------------------------------------------------
+
+📅 Day 16 Summary
+
+* Designed and implemented Organizer Request System (full-stack)
+* Created `OrganizerRequest` Prisma model with status tracking (PENDING / APPROVED / REJECTED)
+* Built backend APIs for request creation, approval, rejection & admin listing
+* Implemented validation to prevent duplicate pending requests per user
+* Added role upgrade logic (User → Organizer) on approval
+* Secured routes using auth + role-based middleware (ADMIN)
+* Developed Become Organizer page with modern responsive UI (dark theme + glass effect)
+* Integrated Redux (organizerSlice + API) in both Public & Admin dashboards
+* Added real-time UI feedback (loading, success, error states)
+* Created professional About Page for public dashboard
+
+

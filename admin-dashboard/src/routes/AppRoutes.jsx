@@ -7,6 +7,7 @@ import AdminLayout from "../components/AdminLayout";
 import Users from "../pages/Users";
 import Events from "../pages/Events";
 import Bookings from "../pages/Bookings";
+import OrganizerRequests from "../pages/OrganizerRequests";
 
 const AppRoutes = () => {
   return (
@@ -50,6 +51,17 @@ const AppRoutes = () => {
             <PrivateRoute>
               <AdminLayout>
                 <Bookings />
+              </AdminLayout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/organizer-requests"
+          element={
+            <PrivateRoute>
+              <AdminLayout>
+                <OrganizerRequests />
               </AdminLayout>
             </PrivateRoute>
           }
