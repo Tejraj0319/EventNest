@@ -1,75 +1,95 @@
-# Node modules
+# =====================
+# Dependencies
+# =====================
 node_modules/
+node_modules/.prisma/
 
+# =====================
 # Logs
+# =====================
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# =====================
+# Environment variables
+# =====================
+.env
+.env.*
+!.env.example
+.env.local
+
+# =====================
 # Runtime data
+# =====================
 pids/
 *.pid
 *.seed
 *.pid.lock
 
-# Environment variables
-.env
-.env.*
-!.env.example
-
+# =====================
 # Build output
+# =====================
 dist/
 build/
 
+# =====================
 # Coverage
+# =====================
 coverage/
 
+# =====================
 # Dependency directories
+# =====================
 jspm_packages/
 
-# Optional npm cache
+# =====================
+# Cache
+# =====================
 .npm
-
-# Optional eslint cache
 .eslintcache
 
+# =====================
 # OS files
+# =====================
 .DS_Store
 Thumbs.db
 
+# =====================
 # IDE files
+# =====================
 .vscode/
 .idea/
 
-# Mac system files
-.AppleDouble
-.LSOverride
-
+# =====================
 # Temporary files
+# =====================
 tmp/
 temp/
-
-# Debug files
 *.swp
 
-# Prisma (optional - ignore generated files if needed)
-# prisma/generated/
-
-# MongoDB local files (if any)
-*.db
-
-# Uploads (if you store locally)
+# =====================
+# Uploads (local storage only)
+# =====================
 uploads/
 public/uploads/
 
-# Firebase (if used)
-.firebase/
+# =====================
+# Prisma (keep schema, ignore runtime artifacts)
+# =====================
+# DO NOT ignore prisma/schema.prisma
+# prisma/generated/   (only if you use custom generation)
 
-# Docker (optional)
+# =====================
+# Optional
+# =====================
+.firebase/
 docker-compose.override.yml
 
-# Test files (optional)
+# =====================
+# Tests (optional ignore)
+# =====================
 *.test.js
 *.spec.js
