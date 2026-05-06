@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 });
-
+    console.log("USING PORT 587 CONFIG");
 const sendTicketEmail = async (to, pdfBuffer) => {
     try {
         await transporter.sendMail({
