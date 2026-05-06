@@ -6,6 +6,6 @@ const API = axios.create({
 })
 
 export const loginOrganizerAPI = async (data) => {
-    const response = await API.post("auth/login", data)
+    const response = await API.post("/auth/login", data)
     return response.data
 }
