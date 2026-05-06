@@ -1,39 +1,22 @@
 const nodemailer = require("nodemailer");
 
+// const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS
+//     }
+// });
+
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,     
+    secure: false,    
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     }
 });
-
-// const sendTicketEmail = async (to, pdfBuffer) => {
-//     try {
-//         await transporter.sendMail({
-//             from: process.env.EMAIL_USER,
-//             to,
-//             subject: "Your Event Ticket - EventNest",
-//             text: "Booking confirmed. Ticket attached.",
-//             attachments: [
-//                 {
-//                     filename: "ticket.pdf",
-//                     content: pdfBuffer,
-//                     contentType: "application/pdf",
-//                     encoding: "base64" //sometimes PDF breaks if encoding is wrong.
-//                 }
-//             ]
-//         });
-//     } catch (err) {
-//         throw err;
-//         console.log(err);
-//     }
-// };
-
-// module.exports = sendTicketEmail;
-
-
-
 
 const sendTicketEmail = async (to, pdfBuffer) => {
     try {
