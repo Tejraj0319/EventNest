@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node src/server.js",
     "dev": "nodemon --exec node --dns-result-order=ipv4first src/server.js"
   },
   "keywords": [],
