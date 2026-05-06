@@ -1,65 +1,4 @@
-// import React, { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { loginAdmin } from "../features/auth/authSlice";
-// import { useNavigate } from "react-router-dom";
 
-// const Login = () => {
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const { loading, error, token, user } = useSelector((state) => state.auth);
-
-//   const [form, setForm] = useState({
-//     email: "",
-//     password: "",
-//   });
-
-//   const handleChange = (e) => {
-//     setForm({
-//       ...form,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     dispatch(loginAdmin(form));
-//   };
-
-//   useEffect(() => {
-//     if (token && user?.role === "ADMIN") {
-//       navigate("/dashboard");
-//     } else if (token && user?.role === "ORGANIZER") {
-//       navigate("/organizer");
-//     } else if (token && user?.role === "USER") {
-//       navigate("/");
-//     }
-//   }, [token, user, navigate]);
-
-//   return (
-//     <div>
-//       <h1>Admin Login</h1>
-//       <form onSubmit={handleSubmit}>
-//         <input
-//           type="text"
-//           name="email"
-//           placeholder="Enter email"
-//           onChange={handleChange}
-//         />
-//         <input
-//           type="text"
-//           name="password"
-//           placeholder="Enter password"
-//           onChange={handleChange}
-//         />
-//         <button type="submit">{loading ? "Logging in..." : "Login"}</button>
-//         {error && <p>{error}</p>}
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Login;
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAdmin } from "../features/auth/authSlice";
@@ -225,7 +164,7 @@ const Login = () => {
           </h2>
 
           <p className="text-gray-200 mb-8">
-            Use:-  admin@gmail.com / 123456
+            Use:-  admin@gmail.com / admin123
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
