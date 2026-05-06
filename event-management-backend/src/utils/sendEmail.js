@@ -10,17 +10,27 @@ const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 587,     
-    secure: false,    
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     }
 });
-    console.log("USING PORT 587 CONFIG");
+console.log("USING PORT 587 CONFIG");
+
+transporter.verify((error, success) => {
+    if (error) {
+        console.error("SMTP ERROR:", error);
+    } else {
+        console.log("SMTP READY");
+    }
+});
+
+
 const sendTicketEmail = async (to, pdfBuffer) => {
     try {
-        await transporter.sendMail({
+        const info = await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to,
             subject: "Your Event Ticket - EventNest",
@@ -83,11 +93,13 @@ const sendTicketEmail = async (to, pdfBuffer) => {
                     filename: "ticket.pdf",
                     content: pdfBuffer,
                     contentType: "application/pdf",
-                    encoding: "base64"
+                    // encoding: "base64"
                 }
             ]
         });
+        console.log("EMAIL SUCCESS:", info.response);
     } catch (err) {
+        console.error("EMAIL ERROR:", err);
         throw err;
     }
 };
