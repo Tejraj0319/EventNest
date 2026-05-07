@@ -1,0 +1,12 @@
+
+backend: 
+https://eventnest-backend-x2tj.onrender.com
+
+Public Dashboard:
+https://event-nest-six.vercel.app/login
+
+Organizer Dashboard:
+https://event-nest-organizer.vercel.app/
+
+Admin Dashboard: 
+https://event-nest-admin.vercel.app/

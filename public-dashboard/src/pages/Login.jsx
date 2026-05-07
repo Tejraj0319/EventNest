@@ -83,9 +83,15 @@ const Login = () => {
           {/* Heading */}
           <div className="mb-6 text-center">
             <h2 className="text-3xl font-bold">Welcome Back</h2>
+
             <p className="text-gray-400 mt-2 text-sm">
               Login to book and manage your events
             </p>
+
+            <div className="mt-3 text-sm text-gray-300">
+              <p>Email:- xyz@gmail.com</p>
+              <p>Pass:- 123456</p>
+            </div>
           </div>
 
           {/* Error */}
