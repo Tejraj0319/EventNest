@@ -144,6 +144,27 @@ Detailed Architecture Documentation:
 - Scalable role-based system
 
 ---
+---
+
+#  Project Screenshots
+
+##  Public Dashboard
+
+![Public Dashboard](https://github.com/Tejraj0319/EventNest/blob/main/organizer-dashboard/public/1.JPG)
+
+---
+
+##  Organizer Dashboard
+
+![Organizer Dashboard](https://github.com/Tejraj0319/EventNest/blob/main/organizer-dashboard/public/2.JPG)
+
+---
+
+##  Admin Login
+
+![Admin Login](https://github.com/Tejraj0319/EventNest/blob/main/organizer-dashboard/public/3.JPG)
+
+---
 
 #  Author
 
