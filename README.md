@@ -128,10 +128,9 @@ Integrated Razorpay webhook verification to handle asynchronous payment confirma
 
 #  Project Architecture
 
-```
 Detailed Architecture Documentation:
 [SYSTEM_DESIGN.md](./SYSTEM_DESIGN.md)
-```
+
 
 ---
 
