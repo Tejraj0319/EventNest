@@ -128,14 +128,9 @@ Integrated Razorpay webhook verification to handle asynchronous payment confirma
 
 #  Project Architecture
 
-```bash
-Frontend (React.js)
-        ↓
-Backend API (Node.js + Express)
-        ↓
-Prisma ORM
-        ↓
-MySQL Database
+```
+Detailed Architecture Documentation:
+[SYSTEM_DESIGN.md](./SYSTEM_DESIGN.md)
 ```
 
 ---
