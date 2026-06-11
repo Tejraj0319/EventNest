@@ -168,8 +168,6 @@ const verifyPayment = async (data) => {
             where: { orderId: razorpay_order_id }
         });
 
-        console.log("Incoming orderId:", razorpay_order_id);
-
         if (!booking) throw new Error("Booking not found");
 
         // 2. Prevent duplicate processing
@@ -225,16 +223,10 @@ const verifyPayment = async (data) => {
         // 9. Generate PDF ticket
         const ticketPdf = await generateTicket(updatedBooking, user, event, qrCode);
 
-        //DEBUG HERE
-        console.log("Is Buffer:", Buffer.isBuffer(ticketPdf));
-        console.log("Size:", ticketPdf.length);
-
         // 10. Send Email (outside DB but inside flow)
         setImmediate(async () => {
             try {
-                console.log("Sending email to:", user.email);
                 await sendTicketEmail(user.email, ticketPdf);
-                console.log("Email sent");
             } catch (err) {
                 console.error("Email failed: ", err);
             }
@@ -289,9 +281,6 @@ const refundBooking = async (bookingId, organizerId) => {
     // await razorpay.payments.refund(booking.paymentId, {
     //     amount: booking.totalPrice * 100
     // });
-    
-    // Temporary test mode
-    console.log("Refund simulated for:", booking.paymentId);
 
     const updatedBooking = await prisma.$transaction(async (tx) => {
         await tx.event.update({

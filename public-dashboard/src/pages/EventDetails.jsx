@@ -1,32 +1,3 @@
-// import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
-// import { fetchEventById } from "../features/events/eventsSlice";
-// const EventDetails = () => {
-//   const { id } = useParams();
-//   console.log("FETCH BY ID:", id);
-//   const dispatch = useDispatch();
-//   const { selectedEvent, loading, error } = useSelector(
-//     (state) => state.events,
-//   );
-//   useEffect(() => {
-//     if (id) {
-//       dispatch(fetchEventById(id));
-//     }
-//   }, [dispatch, id]);
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>{error}</p>;
-//   if (!selectedEvent) return <p>No event found</p>;
-//   return (
-//     <div>
-//       <h1>{selectedEvent.title}</h1>
-//       <p>{selectedEvent.description}</p>
-//       <button>Book Now</button>
-//     </div>
-//   );
-// };
-// export default EventDetails;
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";

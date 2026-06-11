@@ -13,30 +13,35 @@ const Dashboard = () => {
     dispatch(fetchEvents());
   }, [dispatch]);
 
-  // Only organizer events
+  // Only organizer events fetch by id
   const myEvents = events.filter((event) => event.organizerId === user.id);
 
-  // Stats
+  // count total events
   const totalEvents = myEvents.length;
 
+  // upcoming events count
   const upcomingEvents = myEvents.filter(
     (event) => new Date(event.date) > new Date(),
   ).length;
 
+  // total bookings
   const totalBookings = myEvents.reduce((total, event) => {
     return total + (event.totalSeats - event.availableSeats);
   }, 0);
 
+  // total revenue
   const totalRevenue = myEvents.reduce((total, event) => {
     const bookedSeats = event.totalSeats - event.availableSeats;
     return total + bookedSeats * event.price;
   }, 0);
 
+  // seat occupancy(this includes total seats of all events)
   const totalSeats = myEvents.reduce((sum, event) => sum + event.totalSeats, 0);
 
   const soldPercent =
     totalSeats > 0 ? Math.round((totalBookings / totalSeats) * 100) : 0;
 
+  // recent events (sorted by date, latest first, limit to 4)
   const recentEvents = [...myEvents]
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 4);
